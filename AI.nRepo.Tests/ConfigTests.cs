@@ -9,7 +9,7 @@ namespace AI.nRepo.Tests
     public class ConfigTests
     {
         [TestMethod]
-        public void configure()
+        public void configure_nHibernate()
         {
             Configure.As.NHibernate()
                 .ConnectionString("myConnString")
@@ -17,6 +17,14 @@ namespace AI.nRepo.Tests
                 .AddMappings(typeof(ConfigTests).Assembly)
                 .Start();
                 
+        }
+
+
+        [TestMethod]
+        public void configure_raven()
+        {
+            Configure.As.RavenDb()
+                .ConnectionString("myConnString");
         }
     }
 }

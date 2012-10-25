@@ -9,5 +9,7 @@ namespace AI.nRepo.Configuration
     public interface IRepositoryConfiguration
     {
         void Start();
+
+        IDataAccessor<T> Create<T>();
     }
 }

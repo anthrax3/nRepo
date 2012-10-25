@@ -1,18 +1,13 @@
-﻿using System;
+﻿using AI.nRepo.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace AI.nRepo.RavenDB
+namespace AI.nRepo.MongoDB
 {
-    public class RepositoryImpl<T> : IRepository<T>
+    public class MongoDbDataAccessor<T> : IDataAccessor<T>
     {
-        public RepositoryImpl()
-        {
-
-        }
-
         public void Add(T entity)
         {
             throw new NotImplementedException();

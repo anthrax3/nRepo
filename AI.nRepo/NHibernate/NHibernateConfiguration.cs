@@ -13,7 +13,7 @@ namespace AI.nRepo.Configuration
         private readonly IList<Assembly> _assemblies;
         private bool _updateSchema;
         private string _connectionString;
-
+        private SessionFactoryBuilder _sessionFactoryBuilder;
         
         public NHibernateConfiguration()
         {
@@ -40,7 +40,16 @@ namespace AI.nRepo.Configuration
 
         public void Start()
         {
-            new SessionFactoryBuilder(this._connectionString, this._assemblies, this._updateSchema);
+            if(_sessionFactoryBuilder == null)
+            _sessionFactoryBuilder = new SessionFactoryBuilder(this._connectionString, this._assemblies, this._updateSchema);
+        }
+
+        public IDataAccessor<T> Create<T>()
+        {
+            //TODO: use IoC.  This will be interesting b/c we will want to allow for the fluent interface to specify which builder to use
+            if (_sessionFactoryBuilder == null)
+                throw new InvalidOperationException("You Must first start the repository configuration before attempting to access data");
+            return new NHibernateDataAccessor<T>(new SessionBuilder(_sessionFactoryBuilder));
         }
     }
 }

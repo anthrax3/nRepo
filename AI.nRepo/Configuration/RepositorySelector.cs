@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AI.nRepo.CouchDB;
+using AI.nRepo.EF;
+using AI.nRepo.MongoDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,29 +13,34 @@ namespace AI.nRepo.Configuration
     {
 
 
-        public IRepositoryConfiguration CouchDb()
+        public CouchDbConfiguration CouchDb()
         {
-            throw new NotImplementedException();
+            return new CouchDbConfiguration();
         }
 
-        public IRepositoryConfiguration EntityFramework()
+        public EntityFrameworkConfiguration EntityFramework()
         {
-            throw new NotImplementedException();
+            return new EntityFrameworkConfiguration();
         }
 
-        public IRepositoryConfiguration NHibernate()
+        public NHibernateConfiguration NHibernate()
         {
-            throw new NotImplementedException();
+            return new NHibernateConfiguration();
         }
 
-        public IRepositoryConfiguration RavenDb()
+        public RavenDbConfiguration RavenDb()
         {
-            throw new NotImplementedException();
+            return new RavenDbConfiguration();
         }
 
-        public IRepositoryConfiguration MongoDB()
+        public MongoDbConfiguration MongoDB()
         {
-            throw new NotImplementedException();
+            return new MongoDbConfiguration();
         }
+
+
+
+
+        
     }
 }

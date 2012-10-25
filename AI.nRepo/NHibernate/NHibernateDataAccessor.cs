@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using NHibernate.Linq;
 using NHibernate;
+using AI.nRepo.Configuration;
 
 
 namespace AI.nRepo
 {
-    public abstract class RepositoryImpl<T> : IRepository<T>
+    public class NHibernateDataAccessor<T> : IDataAccessor<T>
     {
 
         private readonly ISessionBuilder _sessionBuilder;
         protected ISession CurrentSession;
-        public RepositoryImpl(ISessionBuilder sessionBuilder)
+
+        public NHibernateDataAccessor(ISessionBuilder sessionBuilder)
         {
             this._sessionBuilder = sessionBuilder;
             this.CurrentSession = this._sessionBuilder.GetSession();
@@ -89,5 +91,8 @@ namespace AI.nRepo
         {
             this.CurrentSession.Transaction.Rollback();
         }
+
+
+        
     }
 }
