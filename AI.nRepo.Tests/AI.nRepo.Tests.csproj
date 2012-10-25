@@ -52,6 +52,13 @@
   <ItemGroup>
     <Compile Include="nHibernateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConfigTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AI.nRepo\AI.nRepo.csproj">
+      <Project>{428c6025-fe2e-4385-8908-9443641c1388}</Project>
+      <Name>AI.nRepo</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

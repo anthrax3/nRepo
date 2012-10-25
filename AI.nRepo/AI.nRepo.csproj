@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -45,12 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\IRepositoryConfiguration.cs" />
+    <Compile Include="Configuration\IRepositorySelector.cs" />
+    <Compile Include="Configuration\NHibernateConfiguration.cs" />
+    <Compile Include="Configuration\RepositorySelector.cs" />
+    <Compile Include="Configure.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="NHibernate\ISessionBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NHibernate\RepositoryImpl.cs" />
     <Compile Include="NHibernate\SessionBuilder.cs" />
     <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
+    <Compile Include="RavenDB\RepositoryImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -59,7 +68,6 @@
     <Folder Include="CouchDB\" />
     <Folder Include="EF\" />
     <Folder Include="MongoDB\" />
-    <Folder Include="RavenDB\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

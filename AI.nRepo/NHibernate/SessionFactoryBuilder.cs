@@ -5,6 +5,9 @@ using System.Text;
 using NHibernate;
 using System.Configuration;
 using NHibernate.Tool.hbm2ddl;
+using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Cfg;
+using System.Reflection;
 
 namespace AI.nRepo
 {
@@ -20,23 +23,26 @@ namespace AI.nRepo
             }
         }
 
-        public SessionFactoryBuilder()
+        public SessionFactoryBuilder(string connStr, IList<Assembly> assemblies, bool updateSchema)
         {
-            //var connStr = System.Configuration.ConfigurationManager.ConnectionStrings["Frdconn"].ConnectionString;
-            //var configurer = MsSqlConfiguration.MsSql2005.ConnectionString(connStr);
-            //NHibernate.Cfg.Configuration configuration = null;
+            var configurer = MsSqlConfiguration.MsSql2005.ConnectionString(connStr);
+            NHibernate.Cfg.Configuration configuration = null;
 
-            //_sessionFactory = Fluently.Configure()
-            //.Database(configurer)
-            //.Mappings(m =>m.FluentMappings.AddFromAssembly(typeof(EntityBaseMap<>).Assembly))
+            _sessionFactory = Fluently.Configure()
+            .Database(configurer)
+            .Mappings(m => assemblies.ToList().ForEach(asm=> m.FluentMappings.AddFromAssembly(asm)))
+
+            .ExposeConfiguration(cfg =>
+                                 {
+                                     configuration = cfg;
+                                     cfg.SetProperty(NHibernate.Cfg.Environment.CollectionTypeFactoryClass, typeof(List<>).AssemblyQualifiedName);
+                                     
+                                 })
+            .BuildSessionFactory();
+
+            if (updateSchema)
+                UpdateSchema(configuration);
             
-            //.ExposeConfiguration(cfg =>
-            //                     {
-            //                         configuration = cfg;
-            //                         cfg.SetProperty(NHibernate.Cfg.Environment.CollectionTypeFactoryClass, typeof(List<>).AssemblyQualifiedName);
-            //                         cfg.SetProperty(NHibernate.Cfg.Environment.BatchSize, "100");
-            //                     })
-            //.BuildSessionFactory();
 
         }
 
