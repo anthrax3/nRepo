@@ -9,9 +9,9 @@ namespace AI.nRepo.CouchDB
 {
     public class CouchDbConfiguration : IRepositoryConfiguration
     {
-        public void Start()
+        public IRepositoryConfiguration Start()
         {
-            
+            return this;
         }
 
         public IDataAccessor<T> Create<T>()

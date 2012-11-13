@@ -9,9 +9,9 @@ namespace AI.nRepo.EF
 {
     public class EntityFrameworkConfiguration : IRepositoryConfiguration
     {
-        public void Start()
+        public IRepositoryConfiguration Start()
         {
-            
+            return this;
         }
 
         public IDataAccessor<T> Create<T>()

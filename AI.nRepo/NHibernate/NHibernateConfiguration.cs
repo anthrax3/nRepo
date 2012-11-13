@@ -38,10 +38,11 @@ namespace AI.nRepo.Configuration
             return this;
         }
 
-        public void Start()
+        public IRepositoryConfiguration Start()
         {
             if(_sessionFactoryBuilder == null)
             _sessionFactoryBuilder = new SessionFactoryBuilder(this._connectionString, this._assemblies, this._updateSchema);
+            return this;
         }
 
         public IDataAccessor<T> Create<T>()

@@ -11,9 +11,9 @@ namespace AI.nRepo.Configuration
     {
         private string _connectionString;
 
-        public void Start()
+        public IRepositoryConfiguration Start()
         {
-            
+            return this;
         }
 
         public RavenDbConfiguration ConnectionString(string connectionString)

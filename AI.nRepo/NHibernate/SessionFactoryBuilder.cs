@@ -50,6 +50,6 @@ namespace AI.nRepo
         {
             NHibernate.Tool.hbm2ddl.SchemaUpdate update = new SchemaUpdate(cfg);
             update.Execute(false, true);
-        }
+        } 
     }
 }

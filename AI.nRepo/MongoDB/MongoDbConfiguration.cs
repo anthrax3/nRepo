@@ -9,9 +9,9 @@ namespace AI.nRepo.MongoDB
 {
     public class MongoDbConfiguration : IRepositoryConfiguration
     {
-        public void Start()
+        public IRepositoryConfiguration Start()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public IDataAccessor<T> Create<T>()
