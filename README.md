@@ -10,7 +10,7 @@ Example usage:
 
 *In our implementation, we wanted to leave the framework open to utilization with any IoC container. As such, you only need to perform two simple steps to setup your application. Below is an example, using StructureMap*
 
- 
+<code> 
 //Step 1: Register and start nRepo
 var repoConfig = AI.nRepo.Configure.As
      .NHibernate()
@@ -24,3 +24,4 @@ ObjectFactory.Configure(x=>
 {
       x.For<IRepositoryConfiguration>().Use(repoConfig);
 });
+</code>
