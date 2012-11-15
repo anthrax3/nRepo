@@ -12,9 +12,9 @@ Example usage:
 
 <code> 
 
-//Step 1: Register and start nRepo
+     //Step 1: Register and start nRepo
 
-var repoConfig = AI.nRepo.Configure.As
+     var repoConfig = AI.nRepo.Configure.As
 
      .NHibernate()
 
@@ -26,13 +26,13 @@ var repoConfig = AI.nRepo.Configure.As
 
      .Start();
 
-//Step 2: Register IRepositoryConfiguration in the IoC
-ObjectFactory.Configure(x=>
+     //Step 2: Register IRepositoryConfiguration in the IoC
+     ObjectFactory.Configure(x=>
 
-{
+     {
 
       x.For<IRepositoryConfiguration>().Use(repoConfig);
 
-});
+     });
 
 </code>
