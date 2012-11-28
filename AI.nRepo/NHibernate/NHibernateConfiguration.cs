@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using AI.nRepo.DbPlatforms;
 
 namespace AI.nRepo.Configuration
 {
@@ -13,11 +14,13 @@ namespace AI.nRepo.Configuration
         private readonly IList<Assembly> _assemblies;
         private bool _updateSchema;
         private string _connectionString;
+        private IDatabasePlatform _platform;
         private SessionFactoryBuilder _sessionFactoryBuilder;
         
         public NHibernateConfiguration()
         {
             _assemblies = new List<Assembly>();
+            this._platform = new MsSqlServer.Server2012Platform();
         }
 
         public NHibernateConfiguration AddMappings(Assembly assembly)
@@ -38,10 +41,17 @@ namespace AI.nRepo.Configuration
             return this;
         }
 
+        public NHibernateConfiguration Platform<TPlatform>()
+            where TPlatform : IDatabasePlatform,new()
+        {
+            this._platform = new TPlatform();
+            return this;
+        }
+
         public IRepositoryConfiguration Start()
         {
             if(_sessionFactoryBuilder == null)
-            _sessionFactoryBuilder = new SessionFactoryBuilder(this._connectionString, this._assemblies, this._updateSchema);
+            _sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema);
             return this;
         }
 

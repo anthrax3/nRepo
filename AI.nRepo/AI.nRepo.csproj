@@ -53,8 +53,15 @@
     <Compile Include="Configuration\IRepositorySelector.cs" />
     <Compile Include="CouchDB\CouchDbConfiguration.cs" />
     <Compile Include="CouchDB\CouchDbDataAccessor.cs" />
+    <Compile Include="DbPlatforms\Db2Platform.cs" />
+    <Compile Include="DbPlatforms\MsSqlServerPlatform.cs" />
+    <Compile Include="DbPlatforms\MySqlPlatform.cs" />
+    <Compile Include="DbPlatforms\OraclePlatform.cs" />
+    <Compile Include="DbPlatforms\PostgresPlatform.cs" />
+    <Compile Include="DbPlatforms\SQLitePlatform.cs" />
     <Compile Include="EF\EntityFrameworkConfiguration.cs" />
     <Compile Include="EF\EntityFrameworkDataAccessor.cs" />
+    <Compile Include="IDatabasePlatform.cs" />
     <Compile Include="MongoDB\MongoDbConfiguration.cs" />
     <Compile Include="MongoDB\MongoDbDataAccessor.cs" />
     <Compile Include="NHibernate\NHibernateConfiguration.cs" />

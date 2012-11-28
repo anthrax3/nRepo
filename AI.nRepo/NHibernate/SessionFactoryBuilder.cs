@@ -23,9 +23,9 @@ namespace AI.nRepo
             }
         }
 
-        public SessionFactoryBuilder(string connStr, IList<Assembly> assemblies, bool updateSchema)
+        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema)
         {
-            var configurer = MsSqlConfiguration.MsSql2005.ConnectionString(connStr);
+            var configurer = platform.AsNHibernateConfiguration(connStr) as IPersistenceConfigurer;
             NHibernate.Cfg.Configuration configuration = null;
 
             _sessionFactory = Fluently.Configure()
