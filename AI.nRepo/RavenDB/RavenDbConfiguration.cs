@@ -25,7 +25,9 @@ namespace AI.nRepo.Configuration
 
         public IDataAccessor<T> Create<T>()
         {
-            return new RavenDbDataAccessor<T>();
+            var session = new RavenDbSessionBuilder(this._connectionString);
+            return new RavenDbDataAccessor<T>(session.Session);
+            
         }
     }
 }
