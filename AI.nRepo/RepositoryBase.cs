@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AI.nRepo
 {
@@ -69,7 +69,7 @@ namespace AI.nRepo
         {
             return _dataAccessor.CreateQuery();
         }
-
+        
         public IEnumerator<T> GetEnumerator()
         {
             return this.CreateQuery().GetEnumerator();
@@ -78,6 +78,7 @@ namespace AI.nRepo
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+
         }
 
         public Type ElementType

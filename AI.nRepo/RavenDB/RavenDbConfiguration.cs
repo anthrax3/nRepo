@@ -1,9 +1,9 @@
-﻿using AI.nRepo.RavenDB;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AI.nRepo.Configuration
 {
@@ -25,9 +25,9 @@ namespace AI.nRepo.Configuration
 
         public IDataAccessor<T> Create<T>()
         {
-            var session = new RavenDbSessionBuilder(this._connectionString);
-            return new RavenDbDataAccessor<T>(session.Session);
-            
+            //var session = new RavenDbSessionBuilder(this._connectionString);
+            //return new RavenDbDataAccessor<T>(session.Session);
+            return null;
         }
     }
 }
