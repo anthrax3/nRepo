@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AI.nRepo
 {
-    public interface IRepository<TAggregate>
+    public interface IRepository<TAggregate> : IQueryable<TAggregate>
     {
         void Add(TAggregate entity);
 

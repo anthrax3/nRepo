@@ -69,5 +69,30 @@ namespace AI.nRepo
         {
             return _dataAccessor.CreateQuery();
         }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this.CreateQuery().GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        public Type ElementType
+        {
+            get { return this.CreateQuery().ElementType; }
+        }
+
+        public System.Linq.Expressions.Expression Expression
+        {
+            get { return this.CreateQuery().Expression; }
+        }
+
+        public IQueryProvider Provider
+        {
+            get { return this.CreateQuery().Provider; }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AI.nRepo.Configuration;
+﻿using System.Data.EntityClient;
+using AI.nRepo.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,17 @@ namespace AI.nRepo.EF
 {
     public class EntityFrameworkDataAccessor<T> : IDataAccessor<T>
     {
+        private string _connectionString;
+        
+        public EntityFrameworkDataAccessor(string connectionString)
+        {
+            this._connectionString = connectionString;
+            
+        }
+
         public void Add(T entity)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Remove(T entity)
