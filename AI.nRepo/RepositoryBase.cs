@@ -10,37 +10,43 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private readonly IDataAccessor<T> _dataAccessor;
+        
         public RepositoryBase(IRepositoryConfiguration repoConfiguration)
         {
             _dataAccessor = repoConfiguration.Create<T>();
         }
 
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             _dataAccessor.Add(entity);
         }
 
-        public void Remove(T entity)
+        protected IList<T> ExecuteQuery(string query)
+        {
+            return _dataAccessor.ExecuteQuery(query);
+        } 
+
+        public virtual void Remove(T entity)
         {
             _dataAccessor.Remove(entity);
         }
 
-        public void Remove(IList<T> entities)
+        public virtual void Remove(IList<T> entities)
         {
             _dataAccessor.Remove(entities);
         }
 
-        public T Get(object key)
+        public virtual T Get(object key)
         {
             return _dataAccessor.Get(key);
         }
 
-        public IList<T> GetAll()
+        public virtual IList<T> GetAll()
         {
             return _dataAccessor.GetAll();
         }
 
-        public IList<T> GetAll(int pageSize, int pageNumber)
+        public virtual IList<T> GetAll(int pageSize, int pageNumber)
         {
             return _dataAccessor.GetAll(pageSize, pageNumber);
         }
@@ -60,7 +66,7 @@ namespace AI.nRepo
             _dataAccessor.RollbackTransaction();
         }
 
-        public void Add(IList<T> entities)
+        public virtual void Add(IList<T> entities)
         {
             _dataAccessor.Add(entities);
         }
@@ -94,6 +100,11 @@ namespace AI.nRepo
         public IQueryProvider Provider
         {
             get { return this.CreateQuery().Provider; }
+        }
+
+        public void Dispose()
+        {
+            _dataAccessor.Dispose();
         }
     }
 }

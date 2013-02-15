@@ -6,7 +6,8 @@ using System.Text;
 
 namespace AI.nRepo.Configuration
 {
-    public interface IDataAccessor<TAggregate>
+    public interface IDataAccessor<TAggregate> : IDisposable
+
     {
         void Add(TAggregate entity);
 
@@ -30,6 +31,8 @@ namespace AI.nRepo.Configuration
 
         IQueryable<TAggregate> CreateQuery();
 
-       
+
+
+        IList<TAggregate> ExecuteQuery(string query);
     }
 }

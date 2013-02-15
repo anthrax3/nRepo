@@ -10,6 +10,7 @@ using AI.nRepo.Configuration;
 namespace AI.nRepo
 {
     public class NHibernateDataAccessor<T> : IDataAccessor<T>
+        
     {
 
         private readonly ISessionBuilder _sessionBuilder;
@@ -31,6 +32,7 @@ namespace AI.nRepo
         public virtual void Add(T entity)
         {
             this.CurrentSession.SaveOrUpdate(entity);
+            
         }
 
         public virtual void Remove(IList<T> entities)
@@ -93,6 +95,17 @@ namespace AI.nRepo
         }
 
 
-        
+
+
+
+        public IList<T> ExecuteQuery(string query)
+        {
+            return this.CurrentSession.CreateQuery(query).List<T>();
+        }
+
+        public void Dispose()
+        {
+            this._sessionBuilder.CloseSession();
+        }
     }
 }

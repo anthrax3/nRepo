@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NHibernate;
 using System.Configuration;
+using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Cfg;
@@ -23,9 +24,10 @@ namespace AI.nRepo
             }
         }
 
-        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema)
+        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema, object preSaveHandler,string defaultSchema)
         {
             var configurer = platform.AsNHibernateConfiguration(connStr) as IPersistenceConfigurer;
+            var theUpdateHandler = preSaveHandler as ISaveOrUpdateEventListener;
             NHibernate.Cfg.Configuration configuration = null;
 
             _sessionFactory = Fluently.Configure()
@@ -36,7 +38,19 @@ namespace AI.nRepo
                                  {
                                      configuration = cfg;
                                      cfg.SetProperty(NHibernate.Cfg.Environment.CollectionTypeFactoryClass, typeof(List<>).AssemblyQualifiedName);
-                                     
+                                     cfg.SetProperty(NHibernate.Cfg.Environment.PrepareSql, false.ToString());
+                                     cfg.SetProperty(NHibernate.Cfg.Environment.ShowSql,
+                                                     System.Diagnostics.Debugger.IsAttached.ToString());
+
+                                     if(!String.IsNullOrEmpty(defaultSchema))
+                                         cfg.SetProperty(NHibernate.Cfg.Environment.DefaultSchema, defaultSchema);
+                                     if (theUpdateHandler != null)
+                                     {
+                                         cfg.AppendListeners(ListenerType.PreUpdate, new[] {theUpdateHandler});
+                                         cfg.AppendListeners(ListenerType.PreInsert, new[] {theUpdateHandler});
+                                     }
+
+
                                  })
             .BuildSessionFactory();
 

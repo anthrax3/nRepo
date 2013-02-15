@@ -62,5 +62,16 @@ namespace AI.nRepo.MongoDB
         {
             throw new NotImplementedException();
         }
+
+
+        public IList<T> ExecuteQuery(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
