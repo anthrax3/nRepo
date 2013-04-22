@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security;
-using System.Text;
+using AI.nRepo.Configuration;
 using AI.nRepo.DbPlatforms;
-using NHibernate;
 
-namespace AI.nRepo.Configuration
+namespace AI.nRepo.NHibernate
 {
     public class NHibernateConfiguration : IRepositoryConfiguration
     {
         private readonly IList<Assembly> _assemblies;
         private bool _updateSchema;
-        private Dictionary<string,string> _connectionStrings;
         private IDatabasePlatform _platform;
         private object _interceptor;
-        private Dictionary<string,SessionFactoryBuilder> _sessionFactoryBuilders;
         private string _defaultSchema = "dbo";
         private const string DefaultConnection = "Default";
-        
+        private readonly Dictionary<string, string> _connectionStrings;
+        private readonly Dictionary<string, SessionFactoryBuilder> _sessionFactoryBuilders;
+
         public NHibernateConfiguration()
         {
             _assemblies = new List<Assembly>();
@@ -34,12 +32,13 @@ namespace AI.nRepo.Configuration
             return this;
         }
 
+      
+
         public NHibernateConfiguration SetInterceptor(object interceptor)
         {
             this._interceptor = interceptor;
             return this;
         }
-
 
         public NHibernateConfiguration ConnectionString(string connectionString)
         {
@@ -84,7 +83,6 @@ namespace AI.nRepo.Configuration
         }
 
         public IDataAccessor<T> Create<T>()
-
         {
             return Create<T>(DefaultConnection);
         }

@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Raven.Client;
+using Raven.Client.Document;
 
-//using Raven.Client.Document;
-
-//namespace AI.nRepo.RavenDB
-//{
-//    public class RavenDbSessionBuilder
-//    {
-//        public DocumentStore Session { get; private set; }
-//        public RavenDbSessionBuilder(string connString)
-//        {
-//            var store = new DocumentStore()
-//                            {
-//                                ConnectionStringName = connString
-//                            };
-//            this.Session = store;
-
-//        }
-
-
-//    }
-//}
+namespace AI.nRepo.RavenDB
+{
+    public class RavenDbSessionBuilder
+    {
+        public IDocumentStore Session { get; private set; }
+        public RavenDbSessionBuilder(string connString, string databaseName)
+        {
+            var documentStore = new DocumentStore
+                {
+                    Url = connString,
+                    DefaultDatabase = databaseName
+                }.Initialize();
+            this.Session = documentStore;
+        }
+    }
+}

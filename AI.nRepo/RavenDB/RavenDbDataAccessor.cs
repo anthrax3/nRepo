@@ -1,111 +1,110 @@
-﻿//using AI.nRepo.Configuration;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
+﻿using AI.nRepo.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Raven.Client;
+using Raven.Client.Document;
 
-//using Raven.Client;
-//using Raven.Client.Document;
+namespace AI.nRepo.RavenDB
+{
+    public class RavenDbDataAccessor<T> : IDataAccessor<T>, IUnitOfWorkItem
+    {
+        private readonly IDocumentStore _documentStore;
+        private IDocumentSession _session;
 
-//namespace AI.nRepo.RavenDB
-//{
-//    public class RavenDbDataAccessor<T> : IDataAccessor<T>
-//    {
-//        private DocumentStore _documentStore;
-//        private IDocumentSession _documentSession;
+        public RavenDbDataAccessor(IDocumentStore documentStore)
+        {
+            this._documentStore = documentStore;
+        }
 
-//        public RavenDbDataAccessor(DocumentStore documentStore)
-//        {
-//            this._documentStore = documentStore;
-//        }
+        private void EnsureSession()
+        {
+            if (_session == null)
+                _session = this._documentStore.OpenSession();
+        }
 
-//        private void EnsureSession()
-//        {
-//            if (_documentSession == null)
-//                _documentSession = this._documentStore.OpenSession();
-//        }
+        public void Add(T entity)
+        {
+            this.EnsureSession();
+            this._session.Store(entity);
+        }
 
-//        public void Add(T entity)
-//        {
-//            this.EnsureSession();
-//            this._documentSession.Store(entity);
+        public void Remove(T entity)
+        {
+            this.EnsureSession();
+            this._session.Delete(entity);
+        }
 
-//        }
+        public void Remove(IList<T> entities)
+        {
+            entities.ToList().ForEach(Remove);
+        }
 
-//        public void Remove(T entity)
-//        {
-//            this.EnsureSession();
-//            this._documentSession.Delete(entity);
+        public T Get(object key)
+        {
+            this.EnsureSession();
+            return this._session.Load<T>(Convert.ToInt32(key));
+        }
 
-//        }
+        public IList<T> GetAll()
+        {
+            var query = this.CreateQuery();
+            return query.ToList();
+        }
 
-//        public void Remove(IList<T> entities)
-//        {
-//            foreach(var entity in entities)
-//                this.Remove(entity);
-//        }
+        public IList<T> GetAll(int pageSize, int pageNumber)
+        {
+            var query = this.CreateQuery().Skip(pageSize * pageNumber).Take(pageSize);
+            return query.ToList();
+        }
 
-//        public T Get(object key)
-//        {
-//            this.EnsureSession();
-//            return this._documentSession.Load<T>(Convert.ToString(key));
-//        }
+        private void CloseSession()
+        {
+            if (this._session == null)
+                return;
+            this._session.Dispose();
+            this._session = null;
+        }
 
-//        public IList<T> GetAll()
-//        {
-//            var query = from entity in this.CreateQuery()
-//                        select entity;
-//            return query.ToList();
-//        }
+        public void Add(IList<T> entities)
+        {
+            foreach (var entity in entities)
+                this.Add(entity);
+        }
 
-//        public IList<T> GetAll(int pageSize, int pageNumber)
-//        {
-//            var results = new List<T>();
-//            var query = from entity in this.CreateQuery()
-//                        select entity;
-//            query = query.Skip(pageSize * pageNumber).Take(pageSize);
-//            foreach(var item in query)
-//            {
-//                results.Add(item);
-//            }
-//            return results;
-//        }
+        public IQueryable<T> CreateQuery()
+        {
+            this.EnsureSession();
+            return this._session.Query<T>();
+        }
 
-//        public void BeginTransaction()
-//        {
-//            this.EnsureSession();
-//        }
+        public IList<T> ExecuteQuery(string query)
+        {
+            throw new NotImplementedException();
+        }
 
-//        public void CommitTransaction()
-//        {
-//            if(this._documentSession != null)
-//                this._documentSession.SaveChanges();
-//            this.CloseSession();
-//        }
 
-//        private void CloseSession()
-//        {
-//            if (this._documentSession == null)
-//                return;
-//            this._documentSession.Dispose();
-//            this._documentSession = null;
-//        }
+        public void BeginTransaction()
+        {
+            this.EnsureSession();
+        }
 
-//        public void RollbackTransaction()
-//        {
-//            this.CloseSession();
-//        }
+        public void CommitTransaction()
+        {
+            if (this._session != null)
+                this._session.SaveChanges();
+            this.CloseSession();
+        }
 
-//        public void Add(IList<T> entities)
-//        {
-//            foreach(var entity in entities)
-//                this.Add(entity);
-//        }
+        public void RollbackTransaction()
+        {
+            this.CloseSession();
+        }
 
-//        public IQueryable<T> CreateQuery()
-//        {
-//            this.EnsureSession();
-//            return this._documentSession.Query<T>();
-//        }
-//    }
-//}
+        public void Dispose()
+        {
+            this.CloseSession();
+        }
+    }
+}

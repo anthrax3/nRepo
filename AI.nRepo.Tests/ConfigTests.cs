@@ -16,15 +16,14 @@ namespace AI.nRepo.Tests
                 .UpdateSchemaOnDebug()
                 .AddMappings(typeof(ConfigTests).Assembly)
                 .Start();
-                
         }
-
 
         [TestMethod]
         public void configure_raven()
         {
             Configure.As.RavenDb()
-                .ConnectionString("myConnString");
+                .ConnectionString("myConnString")
+                .Start();
         }
     }
 }

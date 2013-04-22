@@ -1,4 +1,6 @@
-﻿using AI.nRepo.Configuration;
+﻿using System.Collections;
+using System.Linq.Expressions;
+using AI.nRepo.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,19 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private readonly IDataAccessor<T> _dataAccessor;
-        
-        public RepositoryBase(IRepositoryConfiguration repoConfiguration)
+
+        protected RepositoryBase(IRepositoryConfiguration repoConfiguration)
         {
             _dataAccessor = repoConfiguration.Create<T>();
         }
 
+        public virtual IUnitOfWork UnitOfWork
+        {
+            set
+            {
+                value.AddWorkItem(this);
+            }
+        }
         public virtual void Add(T entity)
         {
             _dataAccessor.Add(entity);
@@ -78,33 +87,32 @@ namespace AI.nRepo
         
         public IEnumerator<T> GetEnumerator()
         {
-            return this.CreateQuery().GetEnumerator();
+            return CreateQuery().GetEnumerator();
         }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-
-        }
-
+       
         public Type ElementType
         {
             get { return this.CreateQuery().ElementType; }
         }
 
-        public System.Linq.Expressions.Expression Expression
+        public Expression Expression
         {
-            get { return this.CreateQuery().Expression; }
+            get { return CreateQuery().Expression; }
         }
 
         public IQueryProvider Provider
         {
-            get { return this.CreateQuery().Provider; }
+            get { return CreateQuery().Provider; }
         }
 
         public void Dispose()
         {
             _dataAccessor.Dispose();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

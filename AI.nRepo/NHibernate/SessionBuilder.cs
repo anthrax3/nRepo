@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NHibernate;
+﻿using NHibernate;
 
-namespace AI.nRepo
+namespace AI.nRepo.NHibernate
 {
     public class SessionBuilder : ISessionBuilder
     {

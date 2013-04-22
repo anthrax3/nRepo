@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AI.nRepo.Configuration
 {
-    public interface IDataAccessor<TAggregate> : IDisposable
+    public interface IDataAccessor<TAggregate> : IDisposable 
 
     {
         void Add(TAggregate entity);

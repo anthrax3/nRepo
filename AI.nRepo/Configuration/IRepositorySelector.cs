@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AI.nRepo.NHibernate;
+using AI.nRepo.RavenDB;
 
 
 namespace AI.nRepo.Configuration
@@ -20,7 +22,5 @@ namespace AI.nRepo.Configuration
         RavenDbConfiguration RavenDb();
 
         MongoDbConfiguration MongoDB();
-
-       
     }
 }

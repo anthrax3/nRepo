@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NHibernate;
-using System.Configuration;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Cfg;
 using System.Reflection;
 
-namespace AI.nRepo
+namespace AI.nRepo.NHibernate
 {
     public class SessionFactoryBuilder
     {
@@ -28,7 +26,7 @@ namespace AI.nRepo
         {
             var configurer = platform.AsNHibernateConfiguration(connStr) as IPersistenceConfigurer;
             var theUpdateHandler = preSaveHandler as ISaveOrUpdateEventListener;
-            NHibernate.Cfg.Configuration configuration = null;
+            global::NHibernate.Cfg.Configuration configuration = null;
 
             _sessionFactory = Fluently.Configure()
             .Database(configurer)
@@ -37,13 +35,13 @@ namespace AI.nRepo
             .ExposeConfiguration(cfg =>
                                  {
                                      configuration = cfg;
-                                     cfg.SetProperty(NHibernate.Cfg.Environment.CollectionTypeFactoryClass, typeof(List<>).AssemblyQualifiedName);
-                                     cfg.SetProperty(NHibernate.Cfg.Environment.PrepareSql, false.ToString());
-                                     cfg.SetProperty(NHibernate.Cfg.Environment.ShowSql,
+                                     cfg.SetProperty(global::NHibernate.Cfg.Environment.CollectionTypeFactoryClass, typeof(List<>).AssemblyQualifiedName);
+                                     cfg.SetProperty(global::NHibernate.Cfg.Environment.PrepareSql, false.ToString());
+                                     cfg.SetProperty(global::NHibernate.Cfg.Environment.ShowSql,
                                                      System.Diagnostics.Debugger.IsAttached.ToString());
 
                                      if(!String.IsNullOrEmpty(defaultSchema))
-                                         cfg.SetProperty(NHibernate.Cfg.Environment.DefaultSchema, defaultSchema);
+                                         cfg.SetProperty(global::NHibernate.Cfg.Environment.DefaultSchema, defaultSchema);
                                      if (theUpdateHandler != null)
                                      {
                                          cfg.AppendListeners(ListenerType.PreUpdate, new[] {theUpdateHandler});
@@ -60,9 +58,9 @@ namespace AI.nRepo
 
         }
 
-        private void UpdateSchema(NHibernate.Cfg.Configuration cfg)
+        private void UpdateSchema(global::NHibernate.Cfg.Configuration cfg)
         {
-            NHibernate.Tool.hbm2ddl.SchemaUpdate update = new SchemaUpdate(cfg);
+            global::NHibernate.Tool.hbm2ddl.SchemaUpdate update = new SchemaUpdate(cfg);
             update.Execute(false, true);
         } 
     }

@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AI.nRepo.Configuration;
 
-
-namespace AI.nRepo.Configuration
+namespace AI.nRepo.RavenDB
 {
     public class RavenDbConfiguration : IRepositoryConfiguration
     {
         private string _connectionString;
+        private string _databaseName;
 
         public IRepositoryConfiguration Start()
         {
@@ -22,12 +23,16 @@ namespace AI.nRepo.Configuration
             return this;
         }
 
+        public RavenDbConfiguration DatabaseName(string databaseName)
+        {
+            _databaseName = databaseName;
+            return this;
+        }
 
         public IDataAccessor<T> Create<T>()
         {
-            //var session = new RavenDbSessionBuilder(this._connectionString);
-            //return new RavenDbDataAccessor<T>(session.Session);
-            return null;
+            var session = new RavenDbSessionBuilder(this._connectionString, this._databaseName);
+            return new RavenDbDataAccessor<T>(session.Session);
         }
     }
 }

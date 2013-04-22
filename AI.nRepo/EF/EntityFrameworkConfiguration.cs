@@ -1,4 +1,5 @@
-﻿using AI.nRepo.Configuration;
+﻿using System.Data.Entity;
+using AI.nRepo.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace AI.nRepo.EF
     public class EntityFrameworkConfiguration : IRepositoryConfiguration
     {
         private string _connectionString;
+        
 
         public EntityFrameworkConfiguration ConnectionString(string connectionString)
         {
@@ -19,6 +21,7 @@ namespace AI.nRepo.EF
 
         public IRepositoryConfiguration Start()
         {
+
             return this;
         }
 

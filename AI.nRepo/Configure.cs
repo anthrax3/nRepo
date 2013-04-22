@@ -11,16 +11,16 @@ namespace AI.nRepo
     {
         static Configure()
         {
-            _repositorySelector = new RepositorySelector();
+            RepositorySelector = new RepositorySelector();
         }
 
-        private static IRepositorySelector _repositorySelector;
+        private static readonly IRepositorySelector RepositorySelector;
 
         public static IRepositorySelector As
         {
             get
             {
-                return _repositorySelector;
+                return RepositorySelector;
             }
         }
     }

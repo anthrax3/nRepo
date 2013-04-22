@@ -6,8 +6,10 @@ using System.Text;
 
 namespace AI.nRepo
 {
-    public interface IRepository<TAggregate> : IQueryable<TAggregate>, IDisposable
+    public interface IRepository<TAggregate> : IQueryable<TAggregate>, IUnitOfWorkItem
     {
+        IUnitOfWork UnitOfWork { set; }
+
         void Add(TAggregate entity);
 
         void Remove(TAggregate entity);
@@ -19,12 +21,6 @@ namespace AI.nRepo
         IList<TAggregate> GetAll();
 
         IList<TAggregate> GetAll(int pageSize, int pageNumber);
-
-        void BeginTransaction();
-
-        void CommitTransaction();
-
-        void RollbackTransaction();
 
         void Add(IList<TAggregate> entities);
 
