@@ -79,6 +79,10 @@
     <Compile Include="ConfigTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AI.nRepo.Raven\AI.nRepo.Raven.csproj">
+      <Project>{77eb54dd-6b37-407d-9009-cd93731abd7f}</Project>
+      <Name>AI.nRepo.Raven</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AI.nRepo\AI.nRepo.csproj">
       <Project>{428c6025-fe2e-4385-8908-9443641c1388}</Project>
       <Name>AI.nRepo</Name>

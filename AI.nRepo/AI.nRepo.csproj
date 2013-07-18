@@ -50,12 +50,6 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\packages\RavenDB.Client.2.0.2380\lib\net40\Raven.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\packages\RavenDB.Client.2.0.2380\lib\net40\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -72,26 +66,19 @@
     <Compile Include="Configuration\IDataAccessor.cs" />
     <Compile Include="Configuration\IRepositoryConfiguration.cs" />
     <Compile Include="Configuration\IRepositorySelector.cs" />
-    <Compile Include="CouchDB\CouchDbConfiguration.cs" />
-    <Compile Include="CouchDB\CouchDbDataAccessor.cs" />
     <Compile Include="DbPlatforms\Db2Platform.cs" />
     <Compile Include="DbPlatforms\MsSqlServerPlatform.cs" />
     <Compile Include="DbPlatforms\MySqlPlatform.cs" />
     <Compile Include="DbPlatforms\OraclePlatform.cs" />
     <Compile Include="DbPlatforms\PostgresPlatform.cs" />
     <Compile Include="DbPlatforms\SQLitePlatform.cs" />
-    <Compile Include="EF\EntityFrameworkConfiguration.cs" />
-    <Compile Include="EF\EntityFrameworkDataAccessor.cs" />
     <Compile Include="IBeforeAddListener.cs" />
     <Compile Include="IDatabasePlatform.cs" />
     <Compile Include="IRepositoryEvent.cs" />
     <Compile Include="IUnitOfWorkItem.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
-    <Compile Include="MongoDB\MongoDbConfiguration.cs" />
-    <Compile Include="MongoDB\MongoDbDataAccessor.cs" />
     <Compile Include="NHibernate\NHibernateConfiguration.cs" />
-    <Compile Include="RavenDB\RavenDbConfiguration.cs" />
     <Compile Include="Configuration\RepositorySelector.cs" />
     <Compile Include="Configure.cs" />
     <Compile Include="IRepository.cs" />
@@ -100,8 +87,6 @@
     <Compile Include="NHibernate\NHibernateDataAccessor.cs" />
     <Compile Include="NHibernate\SessionBuilder.cs" />
     <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
-    <Compile Include="RavenDB\RavenDbDataAccessor.cs" />
-    <Compile Include="RavenDB\RavenDbSessionBuilder.cs" />
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="RepositoryEventRegistry.cs" />
     <Compile Include="UnitOfWork.cs" />
@@ -111,9 +96,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Multiple\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
