@@ -67,6 +67,7 @@
     <Compile Include="Configuration\IRepositoryConfiguration.cs" />
     <Compile Include="Configuration\IRepositorySelector.cs" />
     <Compile Include="DbPlatforms\Db2Platform.cs" />
+    <Compile Include="DbPlatforms\InformixPlatform.cs" />
     <Compile Include="DbPlatforms\MsSqlServerPlatform.cs" />
     <Compile Include="DbPlatforms\MySqlPlatform.cs" />
     <Compile Include="DbPlatforms\OraclePlatform.cs" />
