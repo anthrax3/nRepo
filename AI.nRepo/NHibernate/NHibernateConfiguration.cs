@@ -12,7 +12,6 @@ namespace AI.nRepo.NHibernate
         private readonly IList<Assembly> _assemblies;
         private bool _updateSchema;
         private IDatabasePlatform _platform;
-        private object _interceptor;
         private string _defaultSchema = "dbo";
         private const string DefaultConnection = "Default";
         private readonly Dictionary<string, string> _connectionStrings;
@@ -34,11 +33,7 @@ namespace AI.nRepo.NHibernate
 
       
 
-        public NHibernateConfiguration SetInterceptor(object interceptor)
-        {
-            this._interceptor = interceptor;
-            return this;
-        }
+      
 
         public NHibernateConfiguration ConnectionString(string connectionString)
         {
@@ -76,7 +71,7 @@ namespace AI.nRepo.NHibernate
                 throw new InvalidOperationException("No connections are registered with nRepo");
             foreach(var connection in this._connectionStrings)
             {
-                _sessionFactoryBuilders[connection.Key] = new SessionFactoryBuilder(this._platform, connection.Value, this._assemblies, this._updateSchema, this._interceptor, this._defaultSchema);
+                _sessionFactoryBuilders[connection.Key] = new SessionFactoryBuilder(this._platform, connection.Value, this._assemblies, this._updateSchema, this._defaultSchema);
             }
             
             return this;
@@ -85,6 +80,13 @@ namespace AI.nRepo.NHibernate
         public IDataAccessor<T> Create<T>()
         {
             return Create<T>(DefaultConnection);
+        }
+
+        private IBeforeAddListener _listener;
+        public IRepositoryConfiguration WithBeforeAddListener(IBeforeAddListener listener)
+        {
+            this._listener = listener;
+            return this;
         }
 
         public IDataAccessor<T> Create<T>(string name)

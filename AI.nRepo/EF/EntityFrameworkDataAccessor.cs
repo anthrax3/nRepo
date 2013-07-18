@@ -11,7 +11,7 @@ namespace AI.nRepo.EF
     public class EntityFrameworkDataAccessor<T> : IDataAccessor<T>
     {
         private readonly string _connectionString;
-        private DbContext _context;
+        //private DbContext _context;
 
         public EntityFrameworkDataAccessor(string connectionString)
         {

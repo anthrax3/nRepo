@@ -12,11 +12,14 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private readonly IDataAccessor<T> _dataAccessor;
-
+        
         protected RepositoryBase(IRepositoryConfiguration repoConfiguration)
         {
             _dataAccessor = repoConfiguration.Create<T>();
+            
         }
+
+
 
         public virtual IUnitOfWork UnitOfWork
         {
@@ -27,7 +30,9 @@ namespace AI.nRepo
         }
         public virtual void Add(T entity)
         {
+            RepositoryEventRegistry.RaiseEvent<IBeforeAddListener>(entity);
             _dataAccessor.Add(entity);
+            
         }
 
         protected IList<T> ExecuteQuery(string query)

@@ -13,8 +13,7 @@ namespace AI.nRepo.Configuration
 {
     public class RepositorySelector : IRepositorySelector
     {
-
-
+        
         public CouchDbConfiguration CouchDb()
         {
             return new CouchDbConfiguration();

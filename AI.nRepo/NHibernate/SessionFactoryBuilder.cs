@@ -22,10 +22,10 @@ namespace AI.nRepo.NHibernate
             }
         }
 
-        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema, object preSaveHandler,string defaultSchema)
+        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema,string defaultSchema)
         {
             var configurer = platform.AsNHibernateConfiguration(connStr) as IPersistenceConfigurer;
-            var theUpdateHandler = preSaveHandler as ISaveOrUpdateEventListener;
+         
             global::NHibernate.Cfg.Configuration configuration = null;
 
             _sessionFactory = Fluently.Configure()
@@ -39,14 +39,11 @@ namespace AI.nRepo.NHibernate
                                      cfg.SetProperty(global::NHibernate.Cfg.Environment.PrepareSql, false.ToString());
                                      cfg.SetProperty(global::NHibernate.Cfg.Environment.ShowSql,
                                                      System.Diagnostics.Debugger.IsAttached.ToString());
-
+                                     cfg.SetProperty(global::NHibernate.Cfg.Environment.TransactionStrategy, "NHibernate.Transaction.AdoNetTransactionFactory");
                                      if(!String.IsNullOrEmpty(defaultSchema))
                                          cfg.SetProperty(global::NHibernate.Cfg.Environment.DefaultSchema, defaultSchema);
-                                     if (theUpdateHandler != null)
-                                     {
-                                         cfg.AppendListeners(ListenerType.PreUpdate, new[] {theUpdateHandler});
-                                         cfg.AppendListeners(ListenerType.PreInsert, new[] {theUpdateHandler});
-                                     }
+
+                                    
 
 
                                  })
