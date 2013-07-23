@@ -10,23 +10,11 @@ namespace AI.nRepo.Configuration
 {
     public class RepositorySelector : IRepositorySelector
     {
-        
-        
-
-        
 
         public NHibernateConfiguration NHibernate()
         {
             return new NHibernateConfiguration();
         }
 
-       
-
-        
-
-
-
-
-        
     }
 }

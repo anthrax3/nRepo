@@ -12,11 +12,10 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private readonly IDataAccessor<T> _dataAccessor;
-        
-        protected RepositoryBase(IRepositoryConfiguration repoConfiguration)
+        protected RepositoryBase(string alias)
         {
+            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
             _dataAccessor = repoConfiguration.Create<T>();
-            
         }
 
 

@@ -75,6 +75,7 @@
     <Compile Include="DbPlatforms\SQLitePlatform.cs" />
     <Compile Include="IBeforeAddListener.cs" />
     <Compile Include="IDatabasePlatform.cs" />
+    <Compile Include="InRepoConfiguration.cs" />
     <Compile Include="IRepositoryEvent.cs" />
     <Compile Include="IUnitOfWorkItem.cs" />
     <Compile Include="IUnitOfWork.cs" />

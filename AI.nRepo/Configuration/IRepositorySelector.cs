@@ -12,6 +12,9 @@ namespace AI.nRepo.Configuration
     {
        
         NHibernateConfiguration NHibernate();
+        
 
+
+        
     }
 }
