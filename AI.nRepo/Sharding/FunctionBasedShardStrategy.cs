@@ -5,20 +5,29 @@ using System.Text;
 
 namespace AI.nRepo.Sharding
 {
-    public class FunctionBasedShardStrategy<T> : IShardStrategy
+    public class FunctionBasedShardStrategy<T, TKey> : IShardStrategy
         where T : class
+        where TKey : class
     {
-        private readonly Func<T, string> _function;
-        public FunctionBasedShardStrategy(Func<T, string> func)
+        private readonly Func<T, string> _rule;
+        private readonly Func<TKey, string> _keyRule;
+        public FunctionBasedShardStrategy(Func<T, string> func, Func<TKey, string> keyRule)
         {
-            _function = func;
+            _rule = func;
+            _keyRule = keyRule;
         }
 
 
 
         public string GetShard(object obj)
         {
-            return _function(obj as T);
+            return _rule(obj as T);
+        }
+
+
+        public string GetShardByKey(object obj)
+        {
+            return _keyRule(obj as TKey);
         }
     }
 }

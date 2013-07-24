@@ -10,10 +10,13 @@ namespace AI.nRepo.Sharding
     public static class ClassMapExtension
     {
         
-        public static void ShardBy<T>(this ClassMap<T> classMap, Func<T,string> func)
+        public static void ShardBy<T,TKey>(this ClassMap<T> classMap, Func<T,string> rule, Func<TKey, string> keyRule)
             where T : class
+            where TKey : class
         {
-            ShardLocator.RegisterShardRule<T>(func);
+            ShardLocator.RegisterShardRule<T,TKey>(rule,keyRule);
         }
+
+       
     }
 }

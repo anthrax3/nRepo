@@ -8,5 +8,7 @@ namespace AI.nRepo.Sharding
     public interface IShardStrategy
     {
         string GetShard(object obj);
+
+        string GetShardByKey(object obj);
     }
 }

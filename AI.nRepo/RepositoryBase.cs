@@ -23,7 +23,7 @@ namespace AI.nRepo
 
         public IDataAccessor<T> GetDataAccessor()
         {
-            //TODO: shrug
+            //TODO: this should really enumerate all of them.
             return _defaultAccessor;
         }
 
@@ -37,7 +37,9 @@ namespace AI.nRepo
 
         public IDataAccessor<T> GetDataAccessorByKey(object key)
         {
-            //TODO: shrug
+            var shard = ShardLocator.GetShardByKey<T>(key);
+            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(shard);
+            _dataAccessor = repoConfiguration.Create<T>();
             return _dataAccessor;
         }
 
