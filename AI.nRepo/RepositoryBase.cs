@@ -14,33 +14,53 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private IDataAccessor<T> _dataAccessor;
-        private IDataAccessor<T> _defaultAccessor;
+        private IShardSelection _forcedShard;
+        private string _defaultAlias;
         protected RepositoryBase(string alias)
         {
+            _defaultAlias = alias;
+            SetAccessor(alias);
+        }
+
+        protected IDataAccessor<T> SetAccessor(string alias)
+        {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
-            _defaultAccessor = _dataAccessor = repoConfiguration.Create<T>();
+            _dataAccessor = repoConfiguration.Create<T>();
+            return _dataAccessor;
         }
 
         public IDataAccessor<T> GetDataAccessor()
         {
-            //TODO: this should really enumerate all of them.
-            return _defaultAccessor;
+            return _dataAccessor ;
         }
 
         public IDataAccessor<T> GetDataAccessor(T entity)
         {
-            var shard = ShardLocator.GetShard(entity);
-            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(shard);
-            _dataAccessor = repoConfiguration.Create<T>();
+            if (_forcedShard != null)
+            {
+                var shard = ShardLocator.GetShard(entity);
+                SetAccessor(shard);
+            }
             return _dataAccessor;
         }
 
         public IDataAccessor<T> GetDataAccessorByKey(object key)
         {
-            var shard = ShardLocator.GetShardByKey<T>(key);
-            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(shard);
-            _dataAccessor = repoConfiguration.Create<T>();
+            if (_forcedShard != null)
+            {
+                var shard = ShardLocator.GetShardByKey<T>(key);
+                SetAccessor(shard);
+            }
             return _dataAccessor;
+        }
+
+        public void UseShard(string alias)
+        {
+            if (String.IsNullOrEmpty(alias))
+                alias = _defaultAlias;
+            _forcedShard = new ShardSelection(alias);
+            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
+            _dataAccessor = repoConfiguration.Create<T>();
         }
 
         public virtual IUnitOfWork UnitOfWork

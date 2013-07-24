@@ -25,5 +25,7 @@ namespace AI.nRepo
         void Add(IList<TAggregate> entities);
 
         IQueryable<TAggregate> CreateQuery();
+
+        void UseShard(string alias);
     }
 }

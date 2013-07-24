@@ -98,6 +98,7 @@
     <Compile Include="RepositoryEventRegistry.cs" />
     <Compile Include="Sharding\ClassMapExtension.cs" />
     <Compile Include="Sharding\FunctionBasedShardStrategy.cs" />
+    <Compile Include="Sharding\IShardSelection.cs" />
     <Compile Include="Sharding\IShardStrategy.cs" />
     <Compile Include="Sharding\ShardLocator.cs" />
     <Compile Include="UnitOfWork.cs" />
