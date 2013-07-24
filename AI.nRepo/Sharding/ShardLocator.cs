@@ -7,10 +7,9 @@ namespace AI.nRepo.Sharding
 {
     public static class ShardLocator
     {
-        private static Dictionary<Type, IShardStrategy> _rules;
+        private static Dictionary<Type, IShardStrategy> _rules = new Dictionary<Type, IShardStrategy>();
         public static void RegisterShardRule<T,TKey>(Func<T, string> rule, Func<TKey,string> keyRule)
             where T : class
-            where TKey : class
         {
             _rules[typeof(T)] = new FunctionBasedShardStrategy<T,TKey>(rule, keyRule);
         }

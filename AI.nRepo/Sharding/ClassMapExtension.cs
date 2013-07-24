@@ -12,7 +12,6 @@ namespace AI.nRepo.Sharding
         
         public static void ShardBy<T,TKey>(this ClassMap<T> classMap, Func<T,string> rule, Func<TKey, string> keyRule)
             where T : class
-            where TKey : class
         {
             ShardLocator.RegisterShardRule<T,TKey>(rule,keyRule);
         }

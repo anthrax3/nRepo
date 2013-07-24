@@ -36,7 +36,7 @@ namespace AI.nRepo
 
         public IDataAccessor<T> GetDataAccessor(T entity)
         {
-            if (_forcedShard != null)
+            if (_forcedShard == null)
             {
                 var shard = ShardLocator.GetShard(entity);
                 SetAccessor(shard);
@@ -46,7 +46,7 @@ namespace AI.nRepo
 
         public IDataAccessor<T> GetDataAccessorByKey(object key)
         {
-            if (_forcedShard != null)
+            if (_forcedShard == null)
             {
                 var shard = ShardLocator.GetShardByKey<T>(key);
                 SetAccessor(shard);
@@ -57,10 +57,17 @@ namespace AI.nRepo
         public void UseShard(string alias)
         {
             if (String.IsNullOrEmpty(alias))
+            {
                 alias = _defaultAlias;
-            _forcedShard = new ShardSelection(alias);
-            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
-            _dataAccessor = repoConfiguration.Create<T>();
+                _forcedShard = null;
+                SetAccessor(_defaultAlias);
+            }
+            else
+            {
+                _forcedShard = new ShardSelection(alias);
+                var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
+                _dataAccessor = repoConfiguration.Create<T>();
+            }
         }
 
         public virtual IUnitOfWork UnitOfWork
@@ -113,17 +120,17 @@ namespace AI.nRepo
 
         public void BeginTransaction()
         {
-            GetDataAccessor().BeginTransaction();
+            //GetDataAccessor().BeginTransaction();
         }
 
         public void CommitTransaction()
         {
-            GetDataAccessor().CommitTransaction();
+            //GetDataAccessor().CommitTransaction();
         }
 
         public void RollbackTransaction()
         {
-            GetDataAccessor().RollbackTransaction();
+            //GetDataAccessor().RollbackTransaction();
         }
 
         public virtual void Add(IList<T> entities)

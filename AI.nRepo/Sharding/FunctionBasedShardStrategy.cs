@@ -7,7 +7,6 @@ namespace AI.nRepo.Sharding
 {
     public class FunctionBasedShardStrategy<T, TKey> : IShardStrategy
         where T : class
-        where TKey : class
     {
         private readonly Func<T, string> _rule;
         private readonly Func<TKey, string> _keyRule;
@@ -27,7 +26,7 @@ namespace AI.nRepo.Sharding
 
         public string GetShardByKey(object obj)
         {
-            return _keyRule(obj as TKey);
+            return _keyRule((TKey)obj);
         }
     }
 }
