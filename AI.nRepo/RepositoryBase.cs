@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AI.nRepo.Events;
 using AI.nRepo.Sharding;
 
 
@@ -13,25 +14,32 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private IDataAccessor<T> _dataAccessor;
-        private IDataAccessor<T> _defaultDataAccessor;
+        private IDataAccessor<T> _defaultAccessor;
         protected RepositoryBase(string alias)
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
-            _dataAccessor = _defaultDataAccessor = repoConfiguration.Create<T>();
+            _dataAccessor = repoConfiguration.Create<T>();
         }
 
-        protected IDataAccessor<T> GetDataAccessor(T obj)
+        public IDataAccessor<T> GetDataAccessor()
         {
-             var shardStrategy = ShardRegistry.GetShard(obj);
-             if (shardStrategy == null || shardStrategy.DataAccessor == null)
-             {
-                 return _defaultDataAccessor;
-             }
-             return shardStrategy.DataAccessor as IDataAccessor<T>;
+            //TODO: shrug
+            return _defaultAccessor;
         }
 
+        public IDataAccessor<T> GetDataAccessor(T entity)
+        {
+            var shard = ShardLocator.GetShard(entity);
+            var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(shard);
+            _dataAccessor = repoConfiguration.Create<T>();
+            return _dataAccessor;
+        }
 
-        
+        public IDataAccessor<T> GetDataAccessorByKey(object key)
+        {
+            //TODO: shrug
+            return _dataAccessor;
+        }
 
         public virtual IUnitOfWork UnitOfWork
         {
@@ -43,63 +51,68 @@ namespace AI.nRepo
         public virtual void Add(T entity)
         {
             RepositoryEventRegistry.RaiseEvent<IBeforeAddListener>(entity);
-            _dataAccessor.Add(entity);
+            GetDataAccessor(entity).Add(entity);
+            RepositoryEventRegistry.RaiseEvent<IAfterAddListener>(entity);
             
         }
 
         protected IList<T> ExecuteQuery(string query)
         {
-            return _dataAccessor.ExecuteQuery(query);
+            return GetDataAccessor().ExecuteQuery(query);
         } 
 
         public virtual void Remove(T entity)
         {
-            _dataAccessor.Remove(entity);
+            RepositoryEventRegistry.RaiseEvent<IBeforeRemoveListener>(entity);
+            GetDataAccessor(entity).Remove(entity);
+            RepositoryEventRegistry.RaiseEvent<IAfterRemoveListener>(entity);
         }
 
         public virtual void Remove(IList<T> entities)
         {
-            _dataAccessor.Remove(entities);
+            foreach (var entity in entities)
+                this.Remove(entity);
         }
 
         public virtual T Get(object key)
         {
-            return _dataAccessor.Get(key);
+            return GetDataAccessorByKey(key).Get(key);
         }
 
         public virtual IList<T> GetAll()
         {
-            return _dataAccessor.GetAll();
+            return GetDataAccessor().GetAll();
         }
 
         public virtual IList<T> GetAll(int pageSize, int pageNumber)
         {
-            return _dataAccessor.GetAll(pageSize, pageNumber);
+            return GetDataAccessor().GetAll(pageSize, pageNumber);
         }
 
         public void BeginTransaction()
         {
-            _dataAccessor.BeginTransaction();
+            GetDataAccessor().BeginTransaction();
         }
 
         public void CommitTransaction()
         {
-            _dataAccessor.CommitTransaction();
+            GetDataAccessor().CommitTransaction();
         }
 
         public void RollbackTransaction()
         {
-            _dataAccessor.RollbackTransaction();
+            GetDataAccessor().RollbackTransaction();
         }
 
         public virtual void Add(IList<T> entities)
         {
-            _dataAccessor.Add(entities);
+            foreach (var entity in entities)
+                this.Add(entity);
         }
 
         public IQueryable<T> CreateQuery()
         {
-            return _dataAccessor.CreateQuery();
+            return GetDataAccessor().CreateQuery();
         }
         
         public IEnumerator<T> GetEnumerator()
