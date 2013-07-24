@@ -91,6 +91,9 @@
     <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="RepositoryEventRegistry.cs" />
+    <Compile Include="Sharding\IShardingStrategy.cs" />
+    <Compile Include="Sharding\NoShardingStrategy.cs" />
+    <Compile Include="Sharding\ShardRegistry.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
     <Compile Include="Web\ApiDataAccessor.cs" />

@@ -5,20 +5,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AI.nRepo.Sharding;
 
 
 namespace AI.nRepo
 {
     public abstract class RepositoryBase<T> : IRepository<T>
     {
-        private readonly IDataAccessor<T> _dataAccessor;
+        private IDataAccessor<T> _dataAccessor;
+        private IDataAccessor<T> _defaultDataAccessor;
         protected RepositoryBase(string alias)
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
-            _dataAccessor = repoConfiguration.Create<T>();
+            _dataAccessor = _defaultDataAccessor = repoConfiguration.Create<T>();
+        }
+
+        protected IDataAccessor<T> GetDataAccessor(T obj)
+        {
+             var shardStrategy = ShardRegistry.GetShard(obj);
+             if (shardStrategy == null || shardStrategy.DataAccessor == null)
+             {
+                 return _defaultDataAccessor;
+             }
+             return shardStrategy.DataAccessor as IDataAccessor<T>;
         }
 
 
+        
 
         public virtual IUnitOfWork UnitOfWork
         {
