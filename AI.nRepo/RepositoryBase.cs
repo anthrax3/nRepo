@@ -18,7 +18,7 @@ namespace AI.nRepo
         protected RepositoryBase(string alias)
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
-            _dataAccessor = repoConfiguration.Create<T>();
+            _defaultAccessor = _dataAccessor = repoConfiguration.Create<T>();
         }
 
         public IDataAccessor<T> GetDataAccessor()
