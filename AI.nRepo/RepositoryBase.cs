@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AI.nRepo.Events;
-using AI.nRepo.Sharding;
 
 
 namespace AI.nRepo
@@ -14,7 +13,7 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private IDataAccessor<T> _dataAccessor;
-        private IShardSelection _forcedShard;
+       
         private string _defaultAlias;
         protected RepositoryBase(string alias)
         {
@@ -22,7 +21,7 @@ namespace AI.nRepo
             SetAccessor(alias);
         }
 
-        protected IDataAccessor<T> SetAccessor(string alias)
+        public IDataAccessor<T> SetAccessor(string alias)
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
             _dataAccessor = repoConfiguration.Create<T>();
@@ -32,42 +31,6 @@ namespace AI.nRepo
         public IDataAccessor<T> GetDataAccessor()
         {
             return _dataAccessor ;
-        }
-
-        public IDataAccessor<T> GetDataAccessor(T entity)
-        {
-            if (_forcedShard == null)
-            {
-                var shard = ShardLocator.GetShard(entity);
-                SetAccessor(shard);
-            }
-            return _dataAccessor;
-        }
-
-        public IDataAccessor<T> GetDataAccessorByKey(object key)
-        {
-            if (_forcedShard == null)
-            {
-                var shard = ShardLocator.GetShardByKey<T>(key);
-                SetAccessor(shard);
-            }
-            return _dataAccessor;
-        }
-
-        public void UseShard(string alias)
-        {
-            if (String.IsNullOrEmpty(alias))
-            {
-                alias = _defaultAlias;
-                _forcedShard = null;
-                SetAccessor(_defaultAlias);
-            }
-            else
-            {
-                _forcedShard = new ShardSelection(alias);
-                var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
-                _dataAccessor = repoConfiguration.Create<T>();
-            }
         }
 
         public virtual IUnitOfWork UnitOfWork
@@ -80,7 +43,7 @@ namespace AI.nRepo
         public virtual void Add(T entity)
         {
             RepositoryEventRegistry.RaiseEvent<IBeforeAddListener>(entity);
-            GetDataAccessor(entity).Add(entity);
+            GetDataAccessor().Add(entity);
             RepositoryEventRegistry.RaiseEvent<IAfterAddListener>(entity);
             
         }
@@ -93,7 +56,7 @@ namespace AI.nRepo
         public virtual void Remove(T entity)
         {
             RepositoryEventRegistry.RaiseEvent<IBeforeRemoveListener>(entity);
-            GetDataAccessor(entity).Remove(entity);
+            GetDataAccessor().Remove(entity);
             RepositoryEventRegistry.RaiseEvent<IAfterRemoveListener>(entity);
         }
 
@@ -105,7 +68,7 @@ namespace AI.nRepo
 
         public virtual T Get(object key)
         {
-            return GetDataAccessorByKey(key).Get(key);
+            return GetDataAccessor().Get(key);
         }
 
         public virtual IList<T> GetAll()
@@ -120,17 +83,17 @@ namespace AI.nRepo
 
         public void BeginTransaction()
         {
-            //GetDataAccessor().BeginTransaction();
+            GetDataAccessor().BeginTransaction();
         }
 
         public void CommitTransaction()
         {
-            //GetDataAccessor().CommitTransaction();
+            GetDataAccessor().CommitTransaction();
         }
 
         public void RollbackTransaction()
         {
-            //GetDataAccessor().RollbackTransaction();
+            GetDataAccessor().RollbackTransaction();
         }
 
         public virtual void Add(IList<T> entities)

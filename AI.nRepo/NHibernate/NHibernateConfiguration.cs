@@ -15,7 +15,7 @@ namespace AI.nRepo.NHibernate
         private string _defaultSchema = "dbo";
         private const string DefaultConnection = "Default";
         private string _connectionString;
-        private SessionFactoryBuilder _sessionFactoryBuilder;
+        protected SessionFactoryBuilder _sessionFactoryBuilder;
 
         public NHibernateConfiguration()
         {
@@ -54,7 +54,7 @@ namespace AI.nRepo.NHibernate
             return this;
         }
 
-        public IRepositoryConfiguration Start()
+        public virtual IRepositoryConfiguration Start()
         {
             this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema);
             return this;
@@ -72,7 +72,7 @@ namespace AI.nRepo.NHibernate
             return this;
         }
 
-        public IDataAccessor<T> Create<T>(string name)
+        public virtual IDataAccessor<T> Create<T>(string name)
         {
             return new NHibernateDataAccessor<T>(new SessionBuilder(_sessionFactoryBuilder));
         } 

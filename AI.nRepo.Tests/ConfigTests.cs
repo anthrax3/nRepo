@@ -24,7 +24,7 @@ namespace AI.nRepo.Tests
         public void configure_multiple()
         {
             Configure
-                    .With("Default",
+                    .With("Default1",
                             Configure.As.NHibernate()
                                 .ConnectionString("myConnString")
                                 .UpdateSchemaOnDebug()

@@ -85,6 +85,10 @@
       <Project>{77eb54dd-6b37-407d-9009-cd93731abd7f}</Project>
       <Name>AI.nRepo.Raven</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AI.nRepo.Sharding\AI.nRepo.Sharding.csproj">
+      <Project>{65adb91b-efdb-4b98-9641-af1c85645b7c}</Project>
+      <Name>AI.nRepo.Sharding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AI.nRepo\AI.nRepo.csproj">
       <Project>{428c6025-fe2e-4385-8908-9443641c1388}</Project>
       <Name>AI.nRepo</Name>

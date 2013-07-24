@@ -96,11 +96,6 @@
     <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="RepositoryEventRegistry.cs" />
-    <Compile Include="Sharding\ClassMapExtension.cs" />
-    <Compile Include="Sharding\FunctionBasedShardStrategy.cs" />
-    <Compile Include="Sharding\IShardSelection.cs" />
-    <Compile Include="Sharding\IShardStrategy.cs" />
-    <Compile Include="Sharding\ShardLocator.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
     <Compile Include="Web\ApiDataAccessor.cs" />

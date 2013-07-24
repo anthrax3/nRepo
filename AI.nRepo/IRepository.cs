@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AI.nRepo.Configuration;
 
 
 namespace AI.nRepo
@@ -26,6 +27,6 @@ namespace AI.nRepo
 
         IQueryable<TAggregate> CreateQuery();
 
-        void UseShard(string alias);
+        IDataAccessor<TAggregate> SetAccessor(string alias);
     }
 }

@@ -13,20 +13,17 @@ namespace AI.nRepo.Tests
     {
         public void Startup()
         {
-            AI.nRepo.Configure.With(
-                "Default",
-                AI.nRepo.Configure.As.NHibernate()
+             var masterConfig = AI.nRepo.Configure.As.ShardedNHibernate();
+            masterConfig.CreateShard("Default1")
                 .AddMappings(typeof(Customer).Assembly)
-                .ConnectionString(ConfigurationManager.ConnectionStrings["Default"].ConnectionString)
-                .UpdateSchemaOnDebug()
-                )
-            .With(
-                "Default2",
-                AI.nRepo.Configure.As.NHibernate()
+                .ConnectionString(ConfigurationManager.ConnectionStrings["Default1"].ConnectionString)
+                .UpdateSchemaOnDebug();
+            masterConfig.CreateShard("Default2")
                 .AddMappings(typeof(Customer).Assembly)
                 .ConnectionString(ConfigurationManager.ConnectionStrings["Default2"].ConnectionString)
-                .UpdateSchemaOnDebug()
-            ).Start();
+                .UpdateSchemaOnDebug();
+
+            AI.nRepo.Configure.With("Default", masterConfig).Start();
         }
     }
     public class Customer
@@ -38,6 +35,8 @@ namespace AI.nRepo.Tests
         public virtual string State { get; set; }
 
 
+
+        
     }
 
     public class CustomerMap : ClassMap<Customer>
@@ -48,14 +47,13 @@ namespace AI.nRepo.Tests
             Id(x => x.Id).GeneratedBy.Identity().Default(0);
             Map(x => x.Name, "[Name]");
             Map(x => x.State, "[State]");
-            this.ShardBy<Customer,int>(
-                (c)=> 
-                {
-                    if (c.State == "LA")
-                        return "Default";
-                    return "Default2";
-                }
-                ,(key)=> {return "Default";});
+            this.ShardingStrategy(x => 
+            {
+                if (x.State == "LA" || x.State == "TX" || x.State == "FL")
+                    return "Default1";
+                return "Default2";
+            });
+            this.ShardingLocator().AvailableShards("Default1", "Default2");
         }
     }
 

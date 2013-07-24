@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.nRepo.Couch", "AI.nRepo.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.nRepo.Mongo", "AI.nRepo.Mongo\AI.nRepo.Mongo.csproj", "{AD782849-79EE-4B30-8949-B19C28E6F02D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.nRepo.Sharding", "AI.nRepo.Sharding\AI.nRepo.Sharding.csproj", "{65ADB91B-EFDB-4B98-9641-AF1C85645B7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{AD782849-79EE-4B30-8949-B19C28E6F02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD782849-79EE-4B30-8949-B19C28E6F02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD782849-79EE-4B30-8949-B19C28E6F02D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65ADB91B-EFDB-4B98-9641-AF1C85645B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65ADB91B-EFDB-4B98-9641-AF1C85645B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65ADB91B-EFDB-4B98-9641-AF1C85645B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65ADB91B-EFDB-4B98-9641-AF1C85645B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

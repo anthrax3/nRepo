@@ -1,4 +1,5 @@
 ﻿using System;
+using AI.nRepo.Sharding;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -7,10 +8,16 @@ namespace AI.nRepo.Tests
     [TestClass]
     public class nHibernateTests
     {
+        [TestInitialize]
+        public void setup()
+        {
+            new Boot().Startup();
+        }
+
         [TestMethod]
         public void TestMethod1()
         {
-            new Boot().Startup();
+            
             var c = new Customer();
             c.Name = "abc";
             c.State = "LA";
@@ -25,6 +32,15 @@ namespace AI.nRepo.Tests
             repo.BeginTransaction();
             repo.Add(c2);
             repo.CommitTransaction();
+
+            var c3 = new Customer();
+            c3.State = "DE";
+            c3.Name = "geh";
+            repo.BeginTransaction();
+            repo.Add(c3);
+            repo.CommitTransaction();
         }
+
+       
     }
 }
