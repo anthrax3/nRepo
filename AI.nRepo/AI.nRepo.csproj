@@ -70,6 +70,9 @@
     <Compile Include="DbPlatforms\InformixPlatform.cs" />
     <Compile Include="DbPlatforms\MsSqlServerPlatform.cs" />
     <Compile Include="DbPlatforms\MySqlPlatform.cs" />
+    <Compile Include="DbPlatforms\InformixSqlLinkPlatform.cs" />
+    <Compile Include="DbPlatforms\InformixDRDAPlatform.cs" />
+    <Compile Include="DbPlatforms\OdbcPlatform.cs" />
     <Compile Include="DbPlatforms\OraclePlatform.cs" />
     <Compile Include="DbPlatforms\PostgresPlatform.cs" />
     <Compile Include="DbPlatforms\SQLitePlatform.cs" />

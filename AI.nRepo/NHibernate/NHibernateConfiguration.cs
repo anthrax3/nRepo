@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using AI.nRepo.Configuration;
 using AI.nRepo.DbPlatforms;
+using NHibernate.Linq.Functions;
 
 namespace AI.nRepo.NHibernate
 {
@@ -16,11 +17,12 @@ namespace AI.nRepo.NHibernate
         private const string DefaultConnection = "Default";
         private string _connectionString;
         protected SessionFactoryBuilder _sessionFactoryBuilder;
-
+        private ILinqToHqlGeneratorsRegistry _linqExtension;
         public NHibernateConfiguration()
         {
             _assemblies = new List<Assembly>();
             this._platform = new MsSqlServer.Server2012Platform();
+        
         }
 
         public NHibernateConfiguration AddMappings(Assembly assembly)
@@ -54,9 +56,20 @@ namespace AI.nRepo.NHibernate
             return this;
         }
 
+        public NHibernateConfiguration RegisterLinqExtension(object extension)
+        {
+            
+            var item = extension as ILinqToHqlGeneratorsRegistry;
+            if (item != null)
+            {
+                this._linqExtension = item;
+            }
+            return this;
+        }
+
         public virtual IRepositoryConfiguration Start()
         {
-            this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema);
+            this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema, this._linqExtension);
             return this;
         }
 
