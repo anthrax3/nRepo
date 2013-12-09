@@ -17,6 +17,10 @@ namespace AI.nRepo.NHibernate
             CurrentSession = _sessionBuilder.GetSession();
         }
 
+        public ISession Session
+        {
+            get { return CurrentSession; }
+        }
         public virtual IQueryable<T> CreateQuery()
         {
             CurrentSession.Flush();

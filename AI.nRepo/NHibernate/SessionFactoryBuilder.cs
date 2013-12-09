@@ -25,7 +25,7 @@ namespace AI.nRepo.NHibernate
             }
         }
 
-        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema, string defaultSchema, ILinqToHqlGeneratorsRegistry linqRegistry, bool showSql)
+        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema, string defaultSchema, ILinqToHqlGeneratorsRegistry linqRegistry, bool showSql, Action<global::NHibernate.Cfg.Configuration> exposedConfig)
         {
             var configurer = platform.AsNHibernateConfiguration(connStr) as IPersistenceConfigurer;
          
@@ -46,7 +46,8 @@ namespace AI.nRepo.NHibernate
                                          cfg.SetProperty(global::NHibernate.Cfg.Environment.DefaultSchema, defaultSchema);
                                      if (null != linqRegistry) 
                                         cfg.SetProperty(global::NHibernate.Cfg.Environment.LinqToHqlGeneratorsRegistry, linqRegistry.GetType().AssemblyQualifiedName);
-                                    
+                                     if(exposedConfig != null)
+                                        exposedConfig(cfg);
 
                                  })
             .BuildSessionFactory();

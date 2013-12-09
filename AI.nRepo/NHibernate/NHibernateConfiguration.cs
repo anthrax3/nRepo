@@ -8,6 +8,8 @@ using NHibernate.Linq.Functions;
 
 namespace AI.nRepo.NHibernate
 {
+    using System.Runtime.InteropServices;
+
     public class NHibernateConfiguration : IRepositoryConfiguration
     {
         private readonly IList<Assembly> _assemblies;
@@ -19,6 +21,7 @@ namespace AI.nRepo.NHibernate
         private bool _showSql;
         protected SessionFactoryBuilder _sessionFactoryBuilder;
         private ILinqToHqlGeneratorsRegistry _linqExtension;
+        private Action<global::NHibernate.Cfg.Configuration> _exposedConfiguration;
         public NHibernateConfiguration()
         {
             _assemblies = new List<Assembly>();
@@ -35,6 +38,13 @@ namespace AI.nRepo.NHibernate
         public NHibernateConfiguration ConnectionString(string connectionString)
         {
             _connectionString = connectionString;
+            return this;
+        }
+
+        public NHibernateConfiguration ExposeConfiguration(
+            Action<global::NHibernate.Cfg.Configuration> exposedConfig)
+        {
+            this._exposedConfiguration = exposedConfig;
             return this;
         }
 
@@ -76,7 +86,7 @@ namespace AI.nRepo.NHibernate
 
         public virtual IRepositoryConfiguration Start()
         {
-            this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema, this._linqExtension, this._showSql);
+            this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema, this._linqExtension, this._showSql, _exposedConfiguration);
             return this;
         }
 
