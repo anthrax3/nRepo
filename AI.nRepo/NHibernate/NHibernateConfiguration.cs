@@ -16,6 +16,7 @@ namespace AI.nRepo.NHibernate
         private string _defaultSchema = "dbo";
         private const string DefaultConnection = "Default";
         private string _connectionString;
+        private bool _showSql;
         protected SessionFactoryBuilder _sessionFactoryBuilder;
         private ILinqToHqlGeneratorsRegistry _linqExtension;
         public NHibernateConfiguration()
@@ -40,6 +41,12 @@ namespace AI.nRepo.NHibernate
         public NHibernateConfiguration UpdateSchemaOnDebug()
         {
             _updateSchema = true;
+            return this;
+        }
+
+        public NHibernateConfiguration ShowSql(bool showSql)
+        {
+            this._showSql = showSql;
             return this;
         }
 
@@ -69,7 +76,7 @@ namespace AI.nRepo.NHibernate
 
         public virtual IRepositoryConfiguration Start()
         {
-            this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema, this._linqExtension);
+            this._sessionFactoryBuilder = new SessionFactoryBuilder(this._platform, this._connectionString, this._assemblies, this._updateSchema, this._defaultSchema, this._linqExtension, this._showSql);
             return this;
         }
 

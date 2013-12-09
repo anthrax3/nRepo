@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AI.nRepo.Configuration;
+using AI.nRepo.Events;
 
 namespace AI.nRepo
 {
@@ -11,6 +12,7 @@ namespace AI.nRepo
         InRepoConfiguration With(string alias, IRepositoryConfiguration configuration);
         IRepositoryConfiguration GetConfiguration(string alias);
         InRepoConfiguration WithEvent(IRepositoryEvent @event);
+        InRepoConfiguration WithQueryInterceptor(IQueryInterceptor interceptor);
         void Start();
     }
 
@@ -34,6 +36,12 @@ namespace AI.nRepo
         public InRepoConfiguration WithEvent(IRepositoryEvent @event)
         {
             RepositoryEventRegistry.Register(@event);
+            return this;
+        }
+
+        public InRepoConfiguration WithQueryInterceptor(IQueryInterceptor interceptor)
+        {
+            RepositoryEventRegistry.Register(interceptor);
             return this;
         }
 

@@ -78,6 +78,7 @@
     <Compile Include="DbPlatforms\SQLitePlatform.cs" />
     <Compile Include="Events\IAfterAddListener.cs" />
     <Compile Include="Events\IAfterRemoveListener.cs" />
+    <Compile Include="Events\IBeforeQueryListener.cs" />
     <Compile Include="Events\IBeforeRemoveListener.cs" />
     <Compile Include="Events\IBeforeAddListener.cs" />
     <Compile Include="IDatabasePlatform.cs" />

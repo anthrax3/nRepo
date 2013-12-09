@@ -19,6 +19,8 @@ namespace AI.nRepo.NHibernate
 
         public virtual IQueryable<T> CreateQuery()
         {
+            CurrentSession.Flush();
+            CurrentSession.SessionFactory.EvictQueries();
             return CurrentSession.Query<T>();
         }
 
@@ -78,12 +80,22 @@ namespace AI.nRepo.NHibernate
 
         public void CommitTransaction()
         {
-            CurrentSession.Transaction.Commit();
+            try
+            {
+                CurrentSession.Transaction.Commit();
+            }
+            catch
+            {
+                if(CurrentSession.Transaction.IsActive)
+                    CurrentSession.Transaction.Rollback();
+                throw;
+            }
         }
 
         public void RollbackTransaction()
         {
-            CurrentSession.Transaction.Rollback();
+           
+                CurrentSession.Transaction.Rollback();
         }
     }
 }

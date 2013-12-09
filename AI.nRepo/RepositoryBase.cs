@@ -50,6 +50,7 @@ namespace AI.nRepo
 
         protected IList<T> ExecuteQuery(string query)
         {
+           
             return GetDataAccessor().ExecuteQuery(query);
         } 
 
@@ -104,7 +105,13 @@ namespace AI.nRepo
 
         public IQueryable<T> CreateQuery()
         {
-            return GetDataAccessor().CreateQuery();
+            var query = GetDataAccessor().CreateQuery();
+            var eventHandlers = RepositoryEventRegistry.GetQueryInterceptors<T>();
+            foreach (var handler in eventHandlers)
+            {
+                query = handler.Handle(query);
+            }
+            return query;
         }
         
         public IEnumerator<T> GetEnumerator()

@@ -25,7 +25,7 @@ namespace AI.nRepo.NHibernate
             }
         }
 
-        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema, string defaultSchema, ILinqToHqlGeneratorsRegistry linqRegistry)
+        public SessionFactoryBuilder(IDatabasePlatform platform, string connStr, IList<Assembly> assemblies, bool updateSchema, string defaultSchema, ILinqToHqlGeneratorsRegistry linqRegistry, bool showSql)
         {
             var configurer = platform.AsNHibernateConfiguration(connStr) as IPersistenceConfigurer;
          
@@ -40,14 +40,13 @@ namespace AI.nRepo.NHibernate
                                      configuration = cfg;
                                      cfg.SetProperty(global::NHibernate.Cfg.Environment.CollectionTypeFactoryClass, typeof(List<>).AssemblyQualifiedName);
                                      cfg.SetProperty(global::NHibernate.Cfg.Environment.PrepareSql, false.ToString());
-                                     cfg.SetProperty(global::NHibernate.Cfg.Environment.ShowSql,
-                                                     System.Diagnostics.Debugger.IsAttached.ToString());
+                                     cfg.SetProperty(global::NHibernate.Cfg.Environment.ShowSql, showSql.ToString());
                                      cfg.SetProperty(global::NHibernate.Cfg.Environment.TransactionStrategy, "NHibernate.Transaction.AdoNetTransactionFactory");
                                      if(!String.IsNullOrEmpty(defaultSchema))
                                          cfg.SetProperty(global::NHibernate.Cfg.Environment.DefaultSchema, defaultSchema);
                                      if (null != linqRegistry) 
                                         cfg.SetProperty(global::NHibernate.Cfg.Environment.LinqToHqlGeneratorsRegistry, linqRegistry.GetType().AssemblyQualifiedName);
-
+                                    
 
                                  })
             .BuildSessionFactory();
