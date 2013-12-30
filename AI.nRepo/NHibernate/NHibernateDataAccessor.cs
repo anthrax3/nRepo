@@ -90,8 +90,11 @@ namespace AI.nRepo.NHibernate
             }
             catch
             {
-                if(CurrentSession.Transaction.IsActive)
-                    CurrentSession.Transaction.Rollback();
+                //if (CurrentSession.Transaction.IsActive)
+                //{
+                //    CurrentSession.Transaction.Rollback();
+                //    CurrentSession.Transaction.Dispose();
+                //}
                 throw;
             }
         }
