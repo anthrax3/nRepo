@@ -79,29 +79,20 @@ namespace AI.nRepo.NHibernate
 
         public void BeginTransaction()
         {
-            CurrentSession.BeginTransaction();
+            if(!CurrentSession.Transaction.IsActive)
+                CurrentSession.BeginTransaction();
         }
 
         public void CommitTransaction()
         {
-            try
-            {
+            if (CurrentSession.Transaction.IsActive) 
                 CurrentSession.Transaction.Commit();
-            }
-            catch
-            {
-                //if (CurrentSession.Transaction.IsActive)
-                //{
-                //    CurrentSession.Transaction.Rollback();
-                //    CurrentSession.Transaction.Dispose();
-                //}
-                throw;
-            }
+           
         }
 
         public void RollbackTransaction()
         {
-           
+            if (CurrentSession.Transaction.IsActive) 
                 CurrentSession.Transaction.Rollback();
         }
     }
