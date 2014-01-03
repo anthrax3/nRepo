@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NHibernate;
 
 
 namespace AI.nRepo.Configuration
@@ -30,8 +31,6 @@ namespace AI.nRepo.Configuration
         void Add(IList<TAggregate> entities);
 
         IQueryable<TAggregate> CreateQuery();
-
-
 
         IList<TAggregate> ExecuteQuery(string query);
     }

@@ -86,22 +86,19 @@
     <Compile Include="IQueryableExtensions.cs" />
     <Compile Include="Events\IRepositoryEvent.cs" />
     <Compile Include="IRepositoryEventListener.cs" />
-    <Compile Include="IUnitOfWorkItem.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="NHibernate\NHibernateConfiguration.cs" />
     <Compile Include="Configuration\RepositorySelector.cs" />
     <Compile Include="Configure.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="NHibernate\ISessionBuilder.cs" />
+    <Compile Include="NHibernate\NhibernateUnitOfWOrk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NHibernate\NHibernateDataAccessor.cs" />
     <Compile Include="NHibernate\SessionBuilder.cs" />
     <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="RepositoryEventRegistry.cs" />
-    <Compile Include="UnitOfWork.cs" />
-    <Compile Include="UnitOfWorkFactory.cs" />
     <Compile Include="Web\ApiDataAccessor.cs" />
     <Compile Include="Web\IWebDataProvider.cs" />
   </ItemGroup>

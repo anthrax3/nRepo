@@ -22,11 +22,12 @@ namespace AI.nRepo.NHibernate
         protected SessionFactoryBuilder _sessionFactoryBuilder;
         private ILinqToHqlGeneratorsRegistry _linqExtension;
         private Action<global::NHibernate.Cfg.Configuration> _exposedConfiguration;
+       
+
         public NHibernateConfiguration()
         {
             _assemblies = new List<Assembly>();
             this._platform = new MsSqlServer.Server2012Platform();
-        
         }
 
         public NHibernateConfiguration AddMappings(Assembly assembly)
@@ -102,9 +103,36 @@ namespace AI.nRepo.NHibernate
             return this;
         }
 
+
         public virtual IDataAccessor<T> Create<T>(string name)
         {
-            return new NHibernateDataAccessor<T>(new SessionBuilder(_sessionFactoryBuilder));
-        } 
+            if (null == _unitOfWork)
+            {
+                var sessionBuilder = new SessionBuilder(_sessionFactoryBuilder);
+                _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
+            }
+            return new NHibernateDataAccessor<T>(_unitOfWork);
+        }
+
+        [ThreadStatic]
+        private static IUnitOfWork _unitOfWork;
+
+        public virtual IUnitOfWork GetCurrentUnitOfWork()
+        {
+            if (null == _unitOfWork)
+            {
+                var sessionBuilder = new SessionBuilder(_sessionFactoryBuilder);
+                _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
+            }
+            return _unitOfWork;
+        }
+
+        public virtual void CloseUnitOfWork()
+        {
+            if (null != _unitOfWork)
+                _unitOfWork.Dispose();
+        }
+
+
     }
 }

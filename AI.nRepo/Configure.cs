@@ -16,7 +16,7 @@ namespace AI.nRepo
         }
         private static readonly InRepoConfiguration _masterConfiguration;
         private static readonly IRepositorySelector RepositorySelector;
-
+        
         public static InRepoConfiguration MasterConfiguration
         {
             get

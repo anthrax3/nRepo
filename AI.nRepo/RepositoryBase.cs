@@ -13,7 +13,7 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private IDataAccessor<T> _dataAccessor;
-       
+        private IUnitOfWork _unitOfWork;
         private string _defaultAlias;
         protected RepositoryBase(string alias)
         {
@@ -25,6 +25,7 @@ namespace AI.nRepo
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
             _dataAccessor = repoConfiguration.Create<T>();
+            _unitOfWork = repoConfiguration.GetCurrentUnitOfWork();
             return _dataAccessor;
         }
 
@@ -35,9 +36,9 @@ namespace AI.nRepo
 
         public virtual IUnitOfWork UnitOfWork
         {
-            set
+            get
             {
-                value.AddWorkItem(this);
+                return _unitOfWork;
             }
         }
         public virtual void Add(T entity)
@@ -84,17 +85,20 @@ namespace AI.nRepo
 
         public void BeginTransaction()
         {
-            GetDataAccessor().BeginTransaction();
+            if(_unitOfWork == null)
+                GetDataAccessor().BeginTransaction();
         }
 
         public void CommitTransaction()
         {
-            GetDataAccessor().CommitTransaction();
+            if (_unitOfWork == null)
+                GetDataAccessor().CommitTransaction();
         }
 
         public void RollbackTransaction()
         {
-            GetDataAccessor().RollbackTransaction();
+            if (_unitOfWork == null)
+                GetDataAccessor().RollbackTransaction();
         }
 
         public virtual void Add(IList<T> entities)

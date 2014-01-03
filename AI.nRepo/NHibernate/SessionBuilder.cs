@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using System;
+using NHibernate;
 
 namespace AI.nRepo.NHibernate
 {

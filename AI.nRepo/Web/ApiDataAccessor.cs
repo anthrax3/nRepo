@@ -93,6 +93,12 @@ namespace AI.nRepo.Web
         #endregion
 
 
-       
+
+
+
+        public void SetSession(global::NHibernate.ISession session)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
