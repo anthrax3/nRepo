@@ -1,12 +1,13 @@
 ﻿using System;
+using NHibernate;
 
 namespace AI.nRepo
 {
     public interface IUnitOfWork : IDisposable
     {
-        void AddWorkItem(IUnitOfWorkItem workItem);
-        void BeginTransaction();
-        void RollbackTransaction();
-        void CommitTransaction();
+        void Start();
+        void End();
+        void Exception(Exception ex);
+        ISession Session { get; }
     }
 }

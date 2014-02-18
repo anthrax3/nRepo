@@ -10,10 +10,12 @@ using AI.nRepo.Events;
 
 namespace AI.nRepo
 {
+    using System.Data;
+
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private IDataAccessor<T> _dataAccessor;
-       
+        private IUnitOfWork _unitOfWork;
         private string _defaultAlias;
         protected RepositoryBase(string alias)
         {
@@ -21,10 +23,17 @@ namespace AI.nRepo
             SetAccessor(alias);
         }
 
+        protected virtual IsolationLevel GetIsolationLevel()
+        {
+            return IsolationLevel.ReadCommitted;
+        }
+
         public IDataAccessor<T> SetAccessor(string alias)
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
             _dataAccessor = repoConfiguration.Create<T>();
+            _dataAccessor.SetIsolationLevel(GetIsolationLevel());
+            _unitOfWork = repoConfiguration.GetCurrentUnitOfWork();
             return _dataAccessor;
         }
 
@@ -35,9 +44,9 @@ namespace AI.nRepo
 
         public virtual IUnitOfWork UnitOfWork
         {
-            set
+            get
             {
-                value.AddWorkItem(this);
+                return _unitOfWork;
             }
         }
         public virtual void Add(T entity)
@@ -82,19 +91,22 @@ namespace AI.nRepo
             return GetDataAccessor().GetAll(pageSize, pageNumber);
         }
 
-        public void BeginTransaction()
+        public virtual void BeginTransaction()
         {
-            GetDataAccessor().BeginTransaction();
+            if(_unitOfWork == null)
+                GetDataAccessor().BeginTransaction();
         }
 
-        public void CommitTransaction()
+        public virtual void CommitTransaction()
         {
-            GetDataAccessor().CommitTransaction();
+            if (_unitOfWork == null)
+                GetDataAccessor().CommitTransaction();
         }
 
-        public void RollbackTransaction()
+        public virtual void RollbackTransaction()
         {
-            GetDataAccessor().RollbackTransaction();
+            if (_unitOfWork == null)
+                GetDataAccessor().RollbackTransaction();
         }
 
         public virtual void Add(IList<T> entities)

@@ -8,7 +8,7 @@ using Raven.Client.Document;
 
 namespace AI.nRepo.Raven
 {
-    public class RavenDbDataAccessor<T> : IDataAccessor<T>, IUnitOfWorkItem
+    public class RavenDbDataAccessor<T> : IDataAccessor<T>
     {
         private readonly IDocumentStore _documentStore;
         private IDocumentSession _session;
@@ -105,6 +105,11 @@ namespace AI.nRepo.Raven
         public void Dispose()
         {
             this.CloseSession();
+        }
+
+        public void SetIsolationLevel(System.Data.IsolationLevel level)
+        {
+            throw new NotImplementedException();
         }
     }
 }

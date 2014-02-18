@@ -6,41 +6,47 @@ using NHibernate.Linq;
 
 namespace AI.nRepo.NHibernate
 {
-    public class NHibernateDataAccessor<T> : IDataAccessor<T>, IUnitOfWorkItem
-    {
-        private readonly ISessionBuilder _sessionBuilder;
-        protected ISession CurrentSession;
+    using System.Data;
 
-        public NHibernateDataAccessor(ISessionBuilder sessionBuilder)
+    public class NHibernateDataAccessor<T> : IDataAccessor<T>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private IsolationLevel _isolationLevel;
+
+        public void SetIsolationLevel(IsolationLevel level)
         {
-            _sessionBuilder = sessionBuilder;
-            CurrentSession = _sessionBuilder.GetSession();
+            this._isolationLevel = level;
+        }
+
+        public NHibernateDataAccessor(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
         }
 
         public ISession Session
         {
-            get { return CurrentSession; }
+            get { return _unitOfWork.Session; }
         }
         public virtual IQueryable<T> CreateQuery()
         {
-            CurrentSession.Flush();
-            CurrentSession.SessionFactory.EvictQueries();
-            return CurrentSession.Query<T>();
+            Session.Flush();
+            Session.SessionFactory.EvictQueries();
+            return Session.Query<T>();
         }
 
         public virtual void Add(T entity)
         {
-            CurrentSession.SaveOrUpdate(entity);
+            Session.SaveOrUpdate(entity);
         }
 
         public virtual void Remove(IList<T> entities)
         {
-            entities.ForEach(x => CurrentSession.Delete(x));
+            entities.ForEach(x => Session.Delete(x));
         }
 
         public virtual void Remove(T entity)
         {
-            CurrentSession.Delete(entity);
+            Session.Delete(entity);
         }
 
         public virtual IList<T> GetAll()
@@ -56,44 +62,47 @@ namespace AI.nRepo.NHibernate
 
         public virtual T Get(object key)
         {
-            return CurrentSession.Get<T>(key);
+            return Session.Get<T>(key);
         }
 
         public virtual void Add(IList<T> entities)
         {
             foreach (T item in entities)
             {
-                CurrentSession.SaveOrUpdate(item);
+                Session.SaveOrUpdate(item);
             }
         }
 
         public IList<T> ExecuteQuery(string query)
         {
-            return CurrentSession.CreateQuery(query).List<T>();
+            return Session.CreateQuery(query).List<T>();
         }
 
         public void Dispose()
         {
-            _sessionBuilder.CloseSession();
+            _unitOfWork.End();
         }
 
         public void BeginTransaction()
         {
-            if(!CurrentSession.Transaction.IsActive)
-                CurrentSession.BeginTransaction();
+            if (!Session.Transaction.IsActive)
+                Session.BeginTransaction(_isolationLevel);
         }
 
         public void CommitTransaction()
         {
-            if (CurrentSession.Transaction.IsActive) 
-                CurrentSession.Transaction.Commit();
+            if (Session.Transaction.IsActive)
+                Session.Transaction.Commit();
            
         }
 
         public void RollbackTransaction()
         {
-            if (CurrentSession.Transaction.IsActive) 
-                CurrentSession.Transaction.Rollback();
+            if (Session.Transaction.IsActive)
+                Session.Transaction.Rollback();
         }
+
+
+        
     }
 }

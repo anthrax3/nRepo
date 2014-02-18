@@ -18,5 +18,16 @@ namespace AI.nRepo.Mongo
         {
             return new MongoDbDataAccessor<T>();
         }
+
+
+        public IUnitOfWork GetCurrentUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

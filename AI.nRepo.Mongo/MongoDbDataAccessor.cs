@@ -73,5 +73,10 @@ namespace AI.nRepo.Mongo
         {
             throw new NotImplementedException();
         }
+
+        public void SetIsolationLevel(System.Data.IsolationLevel level)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

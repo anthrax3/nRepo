@@ -32,5 +32,16 @@ namespace AI.nRepo.EF
             
             return new EntityFrameworkDataAccessor<T>(_connectionString);
         }
+
+
+        public IUnitOfWork GetCurrentUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

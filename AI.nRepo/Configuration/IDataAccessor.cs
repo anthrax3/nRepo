@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NHibernate;
 
 
 namespace AI.nRepo.Configuration
 {
-    public interface IDataAccessor<TAggregate> : IDisposable 
+    using System.Data;
+
+    public interface IDataAccessor<TAggregate> : IDisposable
 
     {
+        void SetIsolationLevel(IsolationLevel level);
+
         void Add(TAggregate entity);
 
         void Remove(TAggregate entity);
@@ -30,8 +35,6 @@ namespace AI.nRepo.Configuration
         void Add(IList<TAggregate> entities);
 
         IQueryable<TAggregate> CreateQuery();
-
-
 
         IList<TAggregate> ExecuteQuery(string query);
     }

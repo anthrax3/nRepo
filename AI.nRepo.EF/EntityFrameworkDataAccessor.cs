@@ -155,5 +155,10 @@ namespace AI.nRepo.EF
         {
             throw new NotImplementedException();
         }
+
+        public void SetIsolationLevel(System.Data.IsolationLevel level)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

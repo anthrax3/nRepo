@@ -135,5 +135,10 @@ namespace AI.nRepo.Sharding.Nhibernate
             foreach (var config in this._configurations)
                 config.Value.Dispose();
         }
+
+        public void SetIsolationLevel(System.Data.IsolationLevel level)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

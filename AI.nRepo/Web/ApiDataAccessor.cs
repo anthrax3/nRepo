@@ -93,6 +93,16 @@ namespace AI.nRepo.Web
         #endregion
 
 
-       
+
+
+
+        public void SetSession(global::NHibernate.ISession session)
+        {
+            
+        }
+
+        public void SetIsolationLevel(System.Data.IsolationLevel level)
+        {
+        }
     }
 }
