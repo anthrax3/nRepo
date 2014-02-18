@@ -10,7 +10,8 @@ namespace AI.nRepo.NHibernate
 
     public class NHibernateDataAccessor<T> : IDataAccessor<T>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWork;
+        private readonly ISession _session;
         private IsolationLevel _isolationLevel;
 
         public void SetIsolationLevel(IsolationLevel level)
@@ -18,18 +19,18 @@ namespace AI.nRepo.NHibernate
             this._isolationLevel = level;
         }
 
-        public NHibernateDataAccessor(IUnitOfWork unitOfWork)
+        public NHibernateDataAccessor(ISessionBuilder sessionBuilder)//(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+           // _unitOfWork = unitOfWork;
+            _session = sessionBuilder.GetSession();
         }
 
         public ISession Session
         {
-            get { return _unitOfWork.Session; }
+            get { return _session; }
         }
         public virtual IQueryable<T> CreateQuery()
         {
-            Session.Flush();
             Session.SessionFactory.EvictQueries();
             return Session.Query<T>();
         }
@@ -80,7 +81,7 @@ namespace AI.nRepo.NHibernate
 
         public void Dispose()
         {
-            _unitOfWork.End();
+            //_unitOfWork.End();
         }
 
         public void BeginTransaction()

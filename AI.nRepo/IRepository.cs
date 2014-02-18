@@ -7,7 +7,7 @@ using AI.nRepo.Configuration;
 
 namespace AI.nRepo
 {
-    public interface IRepository<TAggregate> : IQueryable<TAggregate>
+    public interface IRepository<TAggregate> : IQueryable<TAggregate>//, IDisposable
     {
        
         void Add(TAggregate entity);

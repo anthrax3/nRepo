@@ -30,6 +30,7 @@ namespace AI.nRepo.NHibernate
         {
             if (_session != null)
             {
+                _session.Clear();
                 _session.Close();
                 _session.Dispose();
                 _session = null;

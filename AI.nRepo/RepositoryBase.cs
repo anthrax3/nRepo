@@ -15,7 +15,7 @@ namespace AI.nRepo
     public abstract class RepositoryBase<T> : IRepository<T>
     {
         private IDataAccessor<T> _dataAccessor;
-        private IUnitOfWork _unitOfWork;
+        //private IUnitOfWork _unitOfWork;
         private string _defaultAlias;
         protected RepositoryBase(string alias)
         {
@@ -33,7 +33,7 @@ namespace AI.nRepo
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
             _dataAccessor = repoConfiguration.Create<T>();
             _dataAccessor.SetIsolationLevel(GetIsolationLevel());
-            _unitOfWork = repoConfiguration.GetCurrentUnitOfWork();
+           // _unitOfWork = repoConfiguration.GetCurrentUnitOfWork();
             return _dataAccessor;
         }
 
@@ -42,13 +42,13 @@ namespace AI.nRepo
             return _dataAccessor ;
         }
 
-        public virtual IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _unitOfWork;
-            }
-        }
+        //public virtual IUnitOfWork UnitOfWork
+        //{
+        //    get
+        //    {
+        //        return _unitOfWork;
+        //    }
+        //}
         public virtual void Add(T entity)
         {
             RepositoryEventRegistry.RaiseEvent<IBeforeAddListener>(entity);
@@ -93,19 +93,19 @@ namespace AI.nRepo
 
         public virtual void BeginTransaction()
         {
-            if(_unitOfWork == null)
+            //if(_unitOfWork == null)
                 GetDataAccessor().BeginTransaction();
         }
 
         public virtual void CommitTransaction()
         {
-            if (_unitOfWork == null)
+            //if (_unitOfWork == null)
                 GetDataAccessor().CommitTransaction();
         }
 
         public virtual void RollbackTransaction()
         {
-            if (_unitOfWork == null)
+           // if (_unitOfWork == null)
                 GetDataAccessor().RollbackTransaction();
         }
 
@@ -149,11 +149,14 @@ namespace AI.nRepo
         public void Dispose()
         {
             _dataAccessor.Dispose();
+            //this._unitOfWork.Dispose();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
+
+        
     }
 }

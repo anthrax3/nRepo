@@ -22,12 +22,20 @@ namespace AI.nRepo.NHibernate
         protected SessionFactoryBuilder _sessionFactoryBuilder;
         private ILinqToHqlGeneratorsRegistry _linqExtension;
         private Action<global::NHibernate.Cfg.Configuration> _exposedConfiguration;
-       
+        private Type _sessionBuilderType;
 
         public NHibernateConfiguration()
         {
             _assemblies = new List<Assembly>();
             this._platform = new MsSqlServer.Server2012Platform();
+            this._sessionBuilderType = typeof(SessionBuilder);
+        }
+
+        public NHibernateConfiguration CustomSessionBuilder<T>()
+            where T : ISessionBuilder
+        {
+            this._sessionBuilderType = typeof(T);
+            return this;
         }
 
         public NHibernateConfiguration AddMappings(Assembly assembly)
@@ -106,32 +114,33 @@ namespace AI.nRepo.NHibernate
 
         public virtual IDataAccessor<T> Create<T>(string name)
         {
-            if (null == _unitOfWork)
-            {
-                var sessionBuilder = new SessionBuilder(_sessionFactoryBuilder);
-                _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
-            }
-            return new NHibernateDataAccessor<T>(_unitOfWork);
+            //if (null == _unitOfWork)
+            //{
+                var sessionBuilder = (ISessionBuilder)Activator.CreateInstance(_sessionBuilderType, new object[] { _sessionFactoryBuilder }); 
+            //    _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
+            //}
+            //return new NHibernateDataAccessor<T>(_unitOfWork);
+                return new NHibernateDataAccessor<T>(sessionBuilder);
         }
 
-        [ThreadStatic]
-        private static IUnitOfWork _unitOfWork;
+        ////[ThreadStatic]
+        //private  IUnitOfWork _unitOfWork;
 
-        public virtual IUnitOfWork GetCurrentUnitOfWork()
-        {
-            if (null == _unitOfWork)
-            {
-                var sessionBuilder = new SessionBuilder(_sessionFactoryBuilder);
-                _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
-            }
-            return _unitOfWork;
-        }
+        //public virtual IUnitOfWork GetCurrentUnitOfWork()
+        //{
+        //    if (null == _unitOfWork)
+        //    {
+        //        var sessionBuilder = (ISessionBuilder)Activator.CreateInstance(_sessionBuilderType, new object[] { _sessionFactoryBuilder });
+        //        _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
+        //    }
+        //    return _unitOfWork;
+        //}
 
-        public virtual void CloseUnitOfWork()
-        {
-            if (null != _unitOfWork)
-                _unitOfWork.Dispose();
-        }
+        //public virtual void CloseUnitOfWork()
+        //{
+        //    if (null != _unitOfWork)
+        //        _unitOfWork.Dispose();
+        //}
 
 
     }
