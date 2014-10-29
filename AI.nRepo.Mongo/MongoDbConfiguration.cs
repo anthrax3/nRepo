@@ -15,6 +15,7 @@ namespace AI.nRepo.Mongo
         }
 
         public IDataAccessor<T> Create<T>()
+            where T: class
         {
             return new MongoDbDataAccessor<T>();
         }

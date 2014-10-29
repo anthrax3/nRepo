@@ -32,6 +32,7 @@ namespace AI.nRepo.Sharding.Nhibernate
         }
 
         public IDataAccessor<T> Create<T>()
+            where T: class
         {
             var list = new Dictionary<string, dynamic>();
             foreach (var kvp in this._configurations)

@@ -13,6 +13,7 @@ namespace AI.nRepo
     using System.Data;
 
     public abstract class RepositoryBase<T> : IRepository<T>
+        where T : class
     {
         private IDataAccessor<T> _dataAccessor;
         //private IUnitOfWork _unitOfWork;
@@ -29,6 +30,7 @@ namespace AI.nRepo
         }
 
         public IDataAccessor<T> SetAccessor(string alias)
+
         {
             var repoConfiguration = Configure.MasterConfiguration.GetConfiguration(alias);
             _dataAccessor = repoConfiguration.Create<T>();

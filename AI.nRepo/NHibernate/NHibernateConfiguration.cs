@@ -100,6 +100,7 @@ namespace AI.nRepo.NHibernate
         }
 
         public IDataAccessor<T> Create<T>()
+            where T : class
         {
             return Create<T>(DefaultConnection);
         }
@@ -114,33 +115,11 @@ namespace AI.nRepo.NHibernate
 
         public virtual IDataAccessor<T> Create<T>(string name)
         {
-            //if (null == _unitOfWork)
-            //{
-                var sessionBuilder = (ISessionBuilder)Activator.CreateInstance(_sessionBuilderType, new object[] { _sessionFactoryBuilder }); 
-            //    _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
-            //}
-            //return new NHibernateDataAccessor<T>(_unitOfWork);
-                return new NHibernateDataAccessor<T>(sessionBuilder);
+            var sessionBuilder = (ISessionBuilder)Activator.CreateInstance(_sessionBuilderType, new object[] { _sessionFactoryBuilder }); 
+            return new NHibernateDataAccessor<T>(sessionBuilder);
         }
 
-        ////[ThreadStatic]
-        //private  IUnitOfWork _unitOfWork;
-
-        //public virtual IUnitOfWork GetCurrentUnitOfWork()
-        //{
-        //    if (null == _unitOfWork)
-        //    {
-        //        var sessionBuilder = (ISessionBuilder)Activator.CreateInstance(_sessionBuilderType, new object[] { _sessionFactoryBuilder });
-        //        _unitOfWork = new NhibernateUnitOfWork(sessionBuilder);
-        //    }
-        //    return _unitOfWork;
-        //}
-
-        //public virtual void CloseUnitOfWork()
-        //{
-        //    if (null != _unitOfWork)
-        //        _unitOfWork.Dispose();
-        //}
+        
 
 
     }

@@ -10,7 +10,6 @@ namespace AI.nRepo.NHibernate
 
     public class NHibernateDataAccessor<T> : IDataAccessor<T>
     {
-        //private readonly IUnitOfWork _unitOfWork;
         private readonly ISession _session;
         private IsolationLevel _isolationLevel;
 
@@ -21,7 +20,6 @@ namespace AI.nRepo.NHibernate
 
         public NHibernateDataAccessor(ISessionBuilder sessionBuilder)//(IUnitOfWork unitOfWork)
         {
-           // _unitOfWork = unitOfWork;
             _session = sessionBuilder.GetSession();
         }
 
@@ -81,7 +79,9 @@ namespace AI.nRepo.NHibernate
 
         public void Dispose()
         {
-            //_unitOfWork.End();
+            if (null == Session)
+                return;
+            Session.Dispose();
         }
 
         public void BeginTransaction()

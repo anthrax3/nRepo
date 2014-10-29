@@ -9,8 +9,6 @@ namespace AI.nRepo.Configuration
     public interface IRepositoryConfiguration
     {
         IRepositoryConfiguration Start();
-        //IUnitOfWork GetCurrentUnitOfWork();
-        //void CloseUnitOfWork();
-        IDataAccessor<T> Create<T>();
+        IDataAccessor<T> Create<T>() where T : class;
     }
 }

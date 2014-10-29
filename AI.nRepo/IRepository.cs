@@ -8,6 +8,7 @@ using AI.nRepo.Configuration;
 namespace AI.nRepo
 {
     public interface IRepository<TAggregate> : IQueryable<TAggregate>//, IDisposable
+        where TAggregate : class
     {
        
         void Add(TAggregate entity);

@@ -8,6 +8,7 @@ using AI.nRepo.Configuration;
 namespace AI.nRepo.Raven
 {
     public class RavenDbConfiguration : IRepositoryConfiguration
+     
     {
         private string _connectionString;
         private string _databaseName;
@@ -30,6 +31,7 @@ namespace AI.nRepo.Raven
         }
 
         public IDataAccessor<T> Create<T>()
+            where T: class
         {
             var session = new RavenDbSessionBuilder(this._connectionString, this._databaseName);
             return new RavenDbDataAccessor<T>(session.Session);

@@ -15,6 +15,7 @@ namespace AI.nRepo.Couch
         }
 
         public IDataAccessor<T> Create<T>()
+            where T: class
         {
             return new CouchDbDataAccessor<T>();
         }
