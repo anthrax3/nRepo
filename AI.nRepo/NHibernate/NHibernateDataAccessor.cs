@@ -34,7 +34,10 @@ namespace AI.nRepo.NHibernate
 
         public virtual void Remove(IList<T> entities)
         {
-            entities.ForEach(x => Session.Delete(x));
+            foreach (var item in entities)
+            {
+                Session.Delete(item);
+            }
         }
 
         public virtual void Remove(T entity)
