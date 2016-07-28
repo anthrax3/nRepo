@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AI.nRepo.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Press Ganey Associates")]
+[assembly: AssemblyCompany("Architecting Innovation LLC")]
 [assembly: AssemblyProduct("AI.nRepo.Tests")]
-[assembly: AssemblyCopyright("Copyright © Press Ganey Associates 2012")]
+[assembly: AssemblyCopyright("Copyright © Architecting Innovation LLC 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
