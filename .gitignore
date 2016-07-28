@@ -4,3 +4,5 @@ obj
 _ReSharper*
 # mstest test results
 TestResults
+.vs
+[Pp]ackages

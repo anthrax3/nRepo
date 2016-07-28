@@ -8,7 +8,7 @@ using Raven.Client.Document;
 
 namespace AI.nRepo.Raven
 {
-    public class RavenDbDataAccessor<T> : IDataAccessor<T>, IUnitOfWorkItem
+    public class RavenDbDataAccessor<T> : IDataAccessor<T>
     {
         private readonly IDocumentStore _documentStore;
         private IDocumentSession _session;

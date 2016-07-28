@@ -18,5 +18,15 @@ namespace AI.nRepo.Couch
         {
             return new CouchDbDataAccessor<T>();
         }
+
+        public IUnitOfWork GetCurrentUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

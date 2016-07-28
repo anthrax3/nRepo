@@ -34,5 +34,15 @@ namespace AI.nRepo.Raven
             var session = new RavenDbSessionBuilder(this._connectionString, this._databaseName);
             return new RavenDbDataAccessor<T>(session.Session);
         }
+
+        public IUnitOfWork GetCurrentUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

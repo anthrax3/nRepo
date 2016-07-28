@@ -41,5 +41,15 @@ namespace AI.nRepo.Sharding.Nhibernate
             }
             return new ShardedNHibernateDataAccessor<T>(list);
         }
+
+        public IUnitOfWork GetCurrentUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseUnitOfWork()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
